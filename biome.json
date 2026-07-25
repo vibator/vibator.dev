@@ -1,0 +1,15 @@
+{
+  "extends": ["@vibator/gate/biome"],
+  "overrides": [
+    {
+      "includes": ["scripts/**"],
+      "linter": {
+        "rules": {
+          "suspicious": {
+            "noConsole": "off"
+          }
+        }
+      }
+    }
+  ]
+}

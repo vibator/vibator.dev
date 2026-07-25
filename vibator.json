@@ -1,0 +1,11 @@
+{
+  "$schema": "./node_modules/vibator/schema.json",
+  "extends": ["@vibator/gate/vibator"],
+  "rules": {
+    "no-deprecated-apis": "off",
+    "no-dead-doc-links": {
+      "severity": "error",
+      "exclude": ["docs/**"]
+    }
+  }
+}

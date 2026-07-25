@@ -1,0 +1,44 @@
+name: 🐛 Bug Report
+description: Report a problem with the site, a page, or the build
+title: "🐛 <TITLE>"
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for reporting a bug. Note that the pages under
+        `/reference/` and the gate standards are synced from their source
+        repositories; if the problem is in the content itself, report it
+        on [vibator](https://github.com/vibator/vibator/issues) or
+        [vibator-gate](https://github.com/vibator/gate/issues) instead.
+  - type: input
+    id: page
+    attributes:
+      label: Page
+      description: The URL of the affected page, if the problem is on a specific page.
+      placeholder: https://vibator.dev/guide/getting-started
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: >
+        Describe the problem: a broken link, a rendering glitch, a build
+        failure. For build failures, include the command you ran and its
+        output.
+    validations:
+      required: true
+  - type: textarea
+    id: expected-result
+    attributes:
+      label: Expected result
+      description: Describe what you expected to happen.
+    validations:
+      required: true
+  - type: checkboxes
+    id: coc
+    attributes:
+      label: Code of Conduct
+      description: By submitting this issue, you agree to follow our [Code of Conduct](https://github.com/vibator/vibator-dev/blob/main/CODE_OF_CONDUCT.md)
+      options:
+        - label: I agree to follow Vibator's Code of Conduct
+          required: true

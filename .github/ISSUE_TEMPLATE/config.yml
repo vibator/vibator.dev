@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: 📚 Reference documentation content
+    url: https://github.com/vibator/vibator/issues
+    about: The pages under /reference/ are synced from the vibator repository. Report content issues there.
+  - name: 🚪 Gate standards content
+    url: https://github.com/vibator/gate/issues
+    about: The gate standards page is synced from the vibator-gate repository. Report content issues there.

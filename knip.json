@@ -1,0 +1,6 @@
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  "entry": ["docs/.vitepress/config.mts", "docs/.vitepress/theme/index.ts"],
+  "project": ["scripts/**", "docs/.vitepress/**"],
+  "ignoreDependencies": ["vue"]
+}
