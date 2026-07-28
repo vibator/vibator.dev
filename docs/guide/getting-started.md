@@ -2,53 +2,11 @@
 
 ## Prerequisites
 
-- [Node.js](https://nodejs.org/) version 22 or higher.
-- A git repository. Vibator asks git which files exist, so `.gitignore` is honored and generated output stays out of results.
+- [Node.js](https://nodejs.org/) version 24 or higher.
 
-## Set up the gate
+## Install
 
-The fastest start is the gate: one guided run sets up Biome, knip, dependency-cruiser, and Vibator, wired to shared presets your project extends.
-
-::: code-group
-
-```sh [npm]
-$ npm create @vibator/gate
-```
-
-```sh [pnpm]
-$ pnpm create @vibator/gate
-```
-
-```sh [yarn]
-$ yarn create @vibator/gate
-```
-
-```sh [bun]
-$ bun create @vibator/gate
-```
-
-:::
-
-The wizard walks numbered steps, one per tool. Each step shows what the tool is for, the exact changes as a diff, and the warnings. Nothing is applied until you say yes. It never overwrites an existing configuration: existing configs get an `extends` entry, existing hooks get the missing lines, everything else stays yours.
-
-When the wizard finishes, run the whole gate:
-
-```sh
-$ npm run verify
-```
-
-Running from a script or CI? Every prompt has a flag, so the wizard never hangs:
-
-```sh
-$ npm create @vibator/gate -- --defaults            # accept the recommendations
-$ npm create @vibator/gate -- --defaults --dry-run  # print the plan as JSON, change nothing
-```
-
-See [The gate](/gate/) for what the presets enforce and how to adjust a standard for one project.
-
-## Add Vibator on its own
-
-Vibator works standalone. Install it as a dev dependency:
+Install Vibator as a dev dependency:
 
 ::: code-group
 
@@ -71,47 +29,47 @@ $ bun add -d vibator
 :::
 
 ::: info TypeScript is optional
-`typescript` is an optional peer dependency, needed only by the type-aware rules. Supported versions are 5.4 up to 6.x; the rules resolve and use your project's own installation.
+`typescript` is an optional peer dependency, used by the `ts` namespace for
+AST-based and type-aware rules. Supported versions are 5.4 up to 6.x; the rules
+resolve and use your project's own installation.
 :::
 
-### First run
+## Write your first rule
 
-```sh
-$ npx vibator
-```
+Vibator ships no rules. A rule lives in the project's `.vibator/` folder, which
+loads automatically, or in a package listed under `plugins`. A rule reads the
+project through the [`vibator` namespace](/reference/vibator-namespace) and
+returns findings. See the [rule definition](/reference/rule-definition) for the
+full shape.
 
-With no config file, every built-in rule runs at its own default severity. The exit code is 1 when any error-severity finding is reported; warnings alone exit 0. Every rule runs even after one fails, so a failing check never hides the results of the others.
+## Scaffold the config
 
-Write a starting configuration when you want to tune severities, globs, or options:
+`.vibator.json` at the project root is optional and configures the rules you
+load. Write a starter file:
 
 ```sh
 $ npx vibator init
 ```
 
-This creates a `vibator.json` with a `$schema` line, so your editor autocompletes and validates every rule's options. The [configuration reference](/reference/configuration) covers every field.
+See the [configuration reference](/reference/configuration) for every field.
 
-### Commands you will use
+## Run it
 
 ```sh
-$ npx vibator list                    # every rule, its default severity and title
-$ npx vibator explain tsdoc-coverage  # the guideline behind a rule
-$ npx vibator --only tsdoc-coverage   # run one rule
-$ npx vibator --reporter json         # machine-readable output, for CI and agents
+$ npx vibator                     # run every enabled rule
+$ npx vibator --write             # run each rule's fix, then recheck
+$ npx vibator list                # every rule, its severity and title
+$ npx vibator explain <rule>      # the guideline behind a rule
+$ npx vibator --only <ids>        # run only these rule ids
+$ npx vibator --reporter sarif    # pretty (default), json, or sarif
 ```
 
-### Adopt on an existing codebase
+## Adopt on an existing codebase
 
-Do not record existing violations; scope the run to what changed instead. New work is checked immediately, and old files are checked when they are next touched:
+To check only new work, scope the run:
 
 ```sh
-$ npx vibator --since origin/main   # everything this branch touched: the right scope for a PR check
+$ npx vibator --since origin/main   # everything this branch touched
 $ npx vibator --changed             # every uncommitted change
-$ npx vibator --staged              # files staged for the next commit: for pre-commit hooks
+$ npx vibator --staged              # files staged for the next commit
 ```
-
-## Next steps
-
-- Read [What is Vibator?](/guide/what-is-vibator) for the reasoning behind the tool.
-- Browse the [rule catalog](/reference/rule-catalog) and enable the rules that need options, such as `locale-parity` and `banned-patterns`.
-- Add your own standards with [Writing rules](/reference/writing-rules).
-- Install the [agent skills](/guide/agent-skills) so your agent configures the tool and fixes findings itself.

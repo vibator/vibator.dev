@@ -1,26 +1,18 @@
 /**
- * Imports reference documentation from the sibling vibator and vibator-gate
- * checkouts into this site, so the site never carries its own copy of the
- * source of truth.
+ * Imports reference documentation from the sibling vibator checkout into this
+ * site, so the site never carries its own copy of the source of truth.
  *
  * Run with `npm run docs:sync`. It also runs before `docs:dev` and
- * `docs:build`. When a sibling checkout is missing, the previously synced
+ * `docs:build`. When the sibling checkout is missing, the previously synced
  * files are kept and a warning is printed, so the site still builds from a
  * standalone clone.
  */
-import {
-  existsSync,
-  mkdirSync,
-  readdirSync,
-  readFileSync,
-  writeFileSync,
-} from "node:fs";
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const siteRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
-const vibatorRoot = resolve(siteRoot, "../vibator");
-const gateRoot = resolve(siteRoot, "../vibator-gate");
+const vibatorRoot = resolve(siteRoot, "node_modules/vibator");
 
 /**
  * Copies one Markdown file into the site with a header naming its source.
@@ -60,24 +52,9 @@ function importRepo(repoRoot, repoName, mappings) {
   console.log(`[sync-docs] imported ${mappings.length} files from ${repoName}`);
 }
 
-const vibatorMappings = [
-  ["docs/configuration.md", "docs/reference/configuration.md"],
-  ["docs/rule-catalog.md", "docs/reference/rule-catalog.md"],
-  ["docs/writing-rules.md", "docs/reference/writing-rules.md"],
-];
-
-if (existsSync(join(vibatorRoot, "docs/rules"))) {
-  for (const entry of readdirSync(join(vibatorRoot, "docs/rules"))) {
-    if (entry.endsWith(".md")) {
-      vibatorMappings.push([
-        `docs/rules/${entry}`,
-        `docs/reference/rules/${entry}`,
-      ]);
-    }
-  }
-}
-
-importRepo(vibatorRoot, "vibator", vibatorMappings);
-importRepo(gateRoot, "vibator-gate", [
-  ["packages/gate/docs/standards.md", "docs/gate/standards.md"],
+importRepo(vibatorRoot, "vibator", [
+  ["docs/design/vibator-namespace.md", "docs/reference/vibator-namespace.md"],
+  ["docs/design/rule-definition.md", "docs/reference/rule-definition.md"],
+  ["docs/design/configuration.md", "docs/reference/configuration.md"],
+  ["docs/design/command-line.md", "docs/reference/command-line.md"],
 ]);

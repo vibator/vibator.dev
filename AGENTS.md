@@ -1,34 +1,47 @@
 # vibator.dev
 
-The vibator.dev website, built with VitePress. Pages under
-`docs/reference/` and `docs/gate/standards.md` are synced from the sibling
-`vibator` and `vibator-gate` checkouts by `npm run docs:sync`; never edit
-them here, edit the source repository and re-run the sync. The site must
-build with `npm run docs:build`, which also fails on dead internal links.
+The vibator.dev website, built with VitePress. It documents vibator, the
+unopinionated linter for JavaScript and TypeScript.
 
-## Vibator
+Pages under `docs/reference/` are synced from the sibling `vibator` checkout by
+`npm run docs:sync`, from `vibator/docs/design/`. Never edit them here; edit the
+design doc in the source repository and re-run the sync. The hand-written pages
+are the landing page (`docs/index.md`) and the guide (`docs/guide/`).
 
-This repository is gated by @vibator/gate. Run the whole gate with
-`npm run verify`. Fix findings at the source; never weaken
-a gate to make it pass. The standards and the override recipes live in
-`node_modules/@vibator/gate/docs/standards.md`; the thin configs in
-this repository state only what differs. For machine-readable findings
-run `npx vibator --reporter json`.
+The site must build with `npm run docs:build`, which also fails on dead internal
+links.
 
-### Agent skills
+## Layout
 
-These packages bundle agent skills (a folder with a SKILL.md, following
-the Agent Skills format). They are not installed automatically; install
-the ones your agent should use.
-- `using-the-vibator-gate` (ships in `node_modules/@vibator/gate/skills/`):
-  how to run the gate, act on findings, and adjust standards through the
-  thin local configs. Install it by copying the folder into your agent's
-  skills directory.
-- `configuring-vibator`: set up or tune vibator.json from what the
-  project contains.
-- `fixing-vibator-findings`: fix findings at the source instead of
-  weakening the gate.
-- `writing-vibator-rules`: write custom rules for standards the built-in
-  ones do not cover.
-  These three ship with vibator: list them with `npx vibator skills` and
-  install them with `npx vibator skills --install`.
+```
+docs/
+  index.md      the landing page.
+  guide/        hand-written: what Vibator is, getting started, agent skills.
+  reference/    synced from vibator/docs/design/. Do not edit here.
+  .vitepress/   VitePress config, nav, and sidebar.
+scripts/
+  sync-docs.mjs imports the reference pages from the sibling vibator checkout.
+```
+
+## Working on it
+
+```sh
+npm run docs:sync     # import the reference pages from ../vibator
+npm run docs:dev      # local dev server, runs the sync first
+npm run docs:build    # production build, fails on dead internal links
+npm run verify        # everything CI runs
+```
+
+## Writing
+
+Documentation, comments, commit messages, and user-facing strings use direct
+language.
+
+- Write plain declarative sentences. State the fact, then at most one sentence of
+  why.
+- No em-dashes. Use commas, colons, parentheses, periods.
+- No rambling, aphorisms, or clever turns. No "X is what makes Y"; write the fact
+  or "Y because X".
+- No idioms or unusual verbs. Name things for what they are. No cute jargon.
+- One fact per bullet. Paragraphs of one to three short sentences.
+- No marketing phrasing. State what the tool does.

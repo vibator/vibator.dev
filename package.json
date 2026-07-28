@@ -22,7 +22,7 @@
     "coding-agents"
   ],
   "engines": {
-    "node": ">=22"
+    "node": ">=24"
   },
   "scripts": {
     "docs:sync": "node scripts/sync-docs.mjs",
@@ -32,18 +32,16 @@
     "format": "biome format --write",
     "lint": "biome check",
     "knip": "knip",
-    "vibator": "vibator",
     "prepare": "husky",
-    "verify": "npm run lint && npm run knip && npm run vibator && npm run docs:build"
+    "verify": "npm run lint && npm run knip && npm run docs:build"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.5.5",
     "@commitlint/cli": "^21.2.1",
     "@commitlint/config-conventional": "^21.2.0",
-    "@vibator/gate": "^0.1.0",
     "husky": "^9.1.7",
     "knip": "^6.29.0",
-    "vibator": "^1.0.0",
+    "vibator": "^2.0.0",
     "vitepress": "^2.0.0-alpha.18",
     "vue": "^3.5.40"
   }
