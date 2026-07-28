@@ -1,46 +1,24 @@
-import { readdirSync } from "node:fs";
-import { dirname, resolve } from "node:path";
-import { fileURLToPath } from "node:url";
 import { defineConfig } from "vitepress";
-
-const docsRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
-
-/**
- * Builds one sidebar item per synced rule guideline, so the sidebar follows
- * the rule set instead of drifting from it.
- *
- * @returns Sidebar items linking each rule id to its guideline page.
- */
-function ruleSidebarItems() {
-  return readdirSync(resolve(docsRoot, "reference/rules"))
-    .filter((entry) => entry.endsWith(".md"))
-    .sort()
-    .map((entry) => {
-      const ruleId = entry.replace(/\.md$/, "");
-      return { text: ruleId, link: `/reference/rules/${ruleId}` };
-    });
-}
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
   title: "Vibator",
   description:
-    "Quality gates for coding agents. Deterministic, actionable checks for the standards linters cannot see.",
+    "An unopinionated linter for JavaScript and TypeScript. Write custom rules for your own standards.",
   head: [["link", { rel: "icon", type: "image/svg+xml", href: "/logo.svg" }]],
   themeConfig: {
     logo: "/logo.svg",
     // https://vitepress.dev/reference/default-theme-config
     nav: [
       { text: "Guide", link: "/guide/what-is-vibator", activeMatch: "/guide/" },
-      { text: "The gate", link: "/gate/", activeMatch: "/gate/" },
       {
         text: "Reference",
         activeMatch: "/reference/",
         items: [
+          { text: "Namespace", link: "/reference/vibator-namespace" },
+          { text: "Rule definition", link: "/reference/rule-definition" },
           { text: "Configuration", link: "/reference/configuration" },
-          { text: "Rule catalog", link: "/reference/rule-catalog" },
-          { text: "Writing rules", link: "/reference/writing-rules" },
-          { text: "Gate standards", link: "/gate/standards" },
+          { text: "Command line", link: "/reference/command-line" },
         ],
       },
     ],
@@ -55,23 +33,12 @@ export default defineConfig({
         ],
       },
       {
-        text: "The gate",
-        items: [
-          { text: "What the gate is", link: "/gate/" },
-          { text: "Standards", link: "/gate/standards" },
-        ],
-      },
-      {
         text: "Reference",
         items: [
+          { text: "Namespace", link: "/reference/vibator-namespace" },
+          { text: "Rule definition", link: "/reference/rule-definition" },
           { text: "Configuration", link: "/reference/configuration" },
-          { text: "Rule catalog", link: "/reference/rule-catalog" },
-          { text: "Writing rules", link: "/reference/writing-rules" },
-          {
-            text: "Rule guidelines",
-            collapsed: true,
-            items: ruleSidebarItems(),
-          },
+          { text: "Command line", link: "/reference/command-line" },
         ],
       },
     ],

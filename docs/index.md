@@ -3,8 +3,8 @@ layout: home
 
 hero:
   name: Vibator
-  text: Quality gates for coding agents
-  tagline: Deterministic, actionable checks for the standards your prompts stop enforcing. Every finding tells the agent what is wrong, what was expected, and how to fix it.
+  text: Rules for your own standards
+  tagline: An unopinionated linter for JavaScript and TypeScript. Write the checks other tools cannot, and link every finding to the guideline behind it.
   image:
     src: /logo.svg
     alt: Vibator
@@ -20,69 +20,52 @@ hero:
       link: https://github.com/vibator/vibator
 
 features:
-  - icon: 🎯
-    title: Findings agents act on
-    details: Every finding carries three separate fields. What is wrong, the standard, and the next action, so agents act on the fix without parsing prose.
+  - icon: 🧩
+    title: Unopinionated
+    details: Vibator ships no rules of its own. It gives you the utilities to turn your own standards into actionable checks.
     link: /guide/what-is-vibator
-    linkText: See a finding
-  - icon: 📎
-    title: The guideline arrives with the failure
-    details: When a check fails, the standard behind it is attached to the finding. The agent reads the reasoning at the exact moment it needs it.
-  - icon: 🚫
-    title: No baselines, ever
-    details: A recorded violation stops being a violation. Adopt incrementally with --changed and --since instead, and exempt single lines only with a stated reason.
+    linkText: Why Vibator
   - icon: ✍️
-    title: Rules in plain TypeScript
-    details: A rule is a plain object with a check function. Pattern-shaped standards go in JSON through banned-patterns, with no code to maintain.
-    link: /reference/writing-rules
-    linkText: Write a rule
-  - icon: 🌿
-    title: Git-aware discovery
-    details: The candidate file set is what git tracks plus what it would keep. Your .gitignore is honored, and generated output is never reported.
+    title: Highly customizable
+    details: Rules are plain JavaScript or TypeScript, with no DSL or pipeline to learn. When a rule runs, you control what its diagnostics look like.
+    link: /guide/getting-started
+    linkText: Getting started
   - icon: 🤖
-    title: Agent skills included
-    details: Ships Claude Code skills for configuring a project, fixing findings from the JSON report, and authoring new rules.
+    title: Integrates with coding agents
+    details: Ships with agent skills, and a rule links to a guideline, so an agent has the detail it needs to act on a finding.
     link: /guide/agent-skills
-    linkText: Install the skills
+    linkText: Agent skills
+  - icon: 🔌
+    title: SARIF compatible
+    details: Drop Vibator into the code-scanning and CI workflows you already run.
+    link: /reference/command-line#reporters
+    linkText: Reporters
 ---
 
-## Set up a project in one command
-
-The gate wizard configures Biome, knip, dependency-cruiser, and Vibator in one guided run. It shows every change as a diff before applying it, and it never overwrites a config you already have.
+## Add it to a project
 
 ::: code-group
 
 ```sh [npm]
-$ npm create @vibator/gate
+$ npm install --save-dev vibator
 ```
 
 ```sh [pnpm]
-$ pnpm create @vibator/gate
+$ pnpm add -D vibator
 ```
 
 ```sh [yarn]
-$ yarn create @vibator/gate
+$ yarn add -D vibator
 ```
 
 ```sh [bun]
-$ bun create @vibator/gate
+$ bun add -d vibator
 ```
 
 :::
 
-Prefer to start smaller? [Add Vibator on its own](/guide/getting-started#add-vibator-on-its-own).
+Vibator ships no rules of its own. Scaffold a `.vibator.json` and start writing them:
 
-## A finding is an instruction
-
-Linters print a rule id and leave the rest to you. Vibator states the problem, the standard, and the fix as separate fields, so a human reads a sentence and an agent executes a step:
-
-```json
-{
-  "file": "src/components/editor.tsx",
-  "line": 401,
-  "message": "\"data\" is a filler name that says nothing about the value",
-  "expected": "A name stating what the value is",
-  "fix": "Rename it after what it holds, such as the entity or unit",
-  "docs": [{ "absolutePath": "…/vibator/docs/rules/meaningful-names.md" }]
-}
+```sh
+$ npx vibator init
 ```
