@@ -42,7 +42,7 @@
     "husky": "^9.1.7",
     "knip": "^6.29.0",
     "vibator": "^2.0.0",
-    "vitepress": "^2.0.0-alpha.18",
+    "vitepress": "^2.0.0-alpha.19",
     "vue": "^3.5.40"
   }
 }
