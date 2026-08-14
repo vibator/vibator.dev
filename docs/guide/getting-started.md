@@ -1,12 +1,26 @@
 # Getting started
 
-## Prerequisites
+## Quick setup
 
-- [Node.js](https://nodejs.org/) version 24 or higher.
+```sh
+$ npx @vibator/create-gate
+```
 
-## Install
+Follow the wizard and then install the packages with:
 
-Install Vibator as a dev dependency:
+```sh
+$ npm install
+```
+
+Plugins and rules configuration are written in the  `.vibator.json` file,
+and each tool has its own configuration under `.vibator/` folder.
+
+If you are done, jump to the [Run it](#run-it) section.
+
+## Install it yourself
+
+To start from nothing and write your own rules, install Vibator as a dev
+dependency:
 
 ::: code-group
 

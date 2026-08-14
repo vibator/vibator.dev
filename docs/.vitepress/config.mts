@@ -15,10 +15,32 @@ export default defineConfig({
         text: "Reference",
         activeMatch: "/reference/",
         items: [
-          { text: "Namespace", link: "/reference/vibator-namespace" },
-          { text: "Rule definition", link: "/reference/rule-definition" },
-          { text: "Configuration", link: "/reference/configuration" },
-          { text: "Command line", link: "/reference/command-line" },
+          {
+            text: "Core",
+            items: [
+              { text: "Namespace", link: "/reference/vibator-namespace" },
+              { text: "Rule definition", link: "/reference/rule-definition" },
+              { text: "Configuration", link: "/reference/configuration" },
+              { text: "Command line", link: "/reference/command-line" },
+            ],
+          },
+          {
+            text: "Plugins",
+            items: [
+              {
+                text: "Introduction",
+                link: "/guide/plugins-and-presets",
+              },
+              { text: "@vibator/biome", link: "/reference/biome-rule" },
+              { text: "@vibator/knip", link: "/reference/knip-rule" },
+              { text: "@vibator/depcruise", link: "/reference/depcruise-rule" },
+              {
+                text: "@vibator/recommended",
+                link: "/reference/recommended-namespace",
+              },
+              { text: "@vibator/gate", link: "/reference/gate-package" },
+            ],
+          },
         ],
       },
     ],
@@ -39,6 +61,90 @@ export default defineConfig({
           { text: "Rule definition", link: "/reference/rule-definition" },
           { text: "Configuration", link: "/reference/configuration" },
           { text: "Command line", link: "/reference/command-line" },
+        ],
+      },
+      {
+        text: "Plugins",
+        items: [
+          {
+            text: "Introduction",
+            link: "/guide/plugins-and-presets",
+          },
+          {
+            text: "@vibator/biome",
+            collapsed: true,
+            items: [
+              { text: "The biome rule", link: "/reference/biome-rule" },
+              { text: "Namespace", link: "/reference/biome-namespace" },
+            ],
+          },
+          {
+            text: "@vibator/knip",
+            collapsed: true,
+            items: [
+              { text: "The knip rule", link: "/reference/knip-rule" },
+              { text: "Namespace", link: "/reference/knip-namespace" },
+            ],
+          },
+          {
+            text: "@vibator/depcruise",
+            collapsed: true,
+            items: [
+              {
+                text: "The depcruise rule",
+                link: "/reference/depcruise-rule",
+              },
+              { text: "Namespace", link: "/reference/depcruise-namespace" },
+            ],
+          },
+          {
+            text: "@vibator/recommended",
+            collapsed: true,
+            items: [
+              { text: "Namespace", link: "/reference/recommended-namespace" },
+              {
+                text: "banned-patterns",
+                link: "/reference/banned-patterns-rule",
+              },
+              {
+                text: "codegen-drift",
+                link: "/reference/codegen-drift-rule",
+              },
+              {
+                text: "env-example-sync",
+                link: "/reference/env-example-sync-rule",
+              },
+              {
+                text: "locale-parity",
+                link: "/reference/locale-parity-rule",
+              },
+              {
+                text: "meaningful-names",
+                link: "/reference/meaningful-names-rule",
+              },
+              {
+                text: "no-conflict-markers",
+                link: "/reference/no-conflict-markers-rule",
+              },
+              {
+                text: "no-dead-doc-links",
+                link: "/reference/no-dead-doc-links-rule",
+              },
+              {
+                text: "no-deprecated-apis",
+                link: "/reference/no-deprecated-apis-rule",
+              },
+              {
+                text: "prefer-array-methods",
+                link: "/reference/prefer-array-methods-rule",
+              },
+              {
+                text: "tsdoc-coverage",
+                link: "/reference/tsdoc-coverage-rule",
+              },
+            ],
+          },
+          { text: "@vibator/gate", link: "/reference/gate-package" },
         ],
       },
     ],

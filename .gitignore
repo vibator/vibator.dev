@@ -15,6 +15,9 @@ dist/
 docs/.vitepress/dist/
 docs/.vitepress/cache/
 
+# reference pages imported from the installed packages by `npm run docs:sync`
+docs/reference/
+
 # testing
 coverage/
 

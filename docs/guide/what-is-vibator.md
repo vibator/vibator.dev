@@ -32,5 +32,7 @@ it fixes the problem at its source.
 
 ## Alongside other tools
 
-Vibator runs next to your other linters. Keep a strict stack of Biome, knip, and
-dependency-cruiser, and use Vibator for the standards those tools do not reach.
+Vibator runs next to your other linters, and it can also run them. The
+[gate](/guide/plugins-and-presets) drives Biome, Knip, and dependency-cruiser
+through their JavaScript APIs and reports their findings as vibator
+diagnostics.
