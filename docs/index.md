@@ -20,29 +20,31 @@ hero:
       link: https://github.com/vibator/vibator
 
 features:
-  - icon: 🧩
-    title: Unopinionated
+  - title: Unopinionated
     details: Vibator ships no rules of its own. It gives you the utilities to turn your own standards into actionable checks.
     link: /guide/what-is-vibator
     linkText: Why Vibator
-  - icon: ✍️
-    title: Highly customizable
+  - title: Highly customizable
     details: Rules are plain JavaScript or TypeScript, with no DSL or pipeline to learn. When a rule runs, you control what its diagnostics look like.
     link: /guide/getting-started
     linkText: Getting started
-  - icon: 🤖
-    title: Integrates with coding agents
-    details: Ships with agent skills, and a rule links to a guideline, so an agent has the detail it needs to act on a finding.
-    link: /guide/agent-skills
-    linkText: Agent skills
-  - icon: 🔌
-    title: SARIF compatible
+  - title: Ready-to-use Plugins
+    details: We provide plguins that run Biome, Knip, and dependency-cruiser as well as a set of recommended rules.
+    link: /guide/plugins-and-presets
+    linkText: What is the gate
+  - title: SARIF compatible
     details: Drop Vibator into the code-scanning and CI workflows you already run.
     link: /reference/command-line#reporters
     linkText: Reporters
 ---
 
-## Add it to a project
+## Scaffolding
+
+```sh
+$ npx @vibator/create-gate
+```
+
+### Or add it manually
 
 ::: code-group
 
