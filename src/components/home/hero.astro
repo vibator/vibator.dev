@@ -1,0 +1,182 @@
+---
+/** The hero: the headline, the pitch, and the install commands on the left, a rule and its output on the right. */
+import { Code } from "astro:components";
+import { colorsRule } from "./samples.ts";
+import Window from "./window.astro";
+
+const commands = `npm install --save-dev vibator
+npx vibator init
+npx vibator`;
+---
+
+<section class="hero">
+  <div class="container grid">
+    <div class="pitch">
+      <h1><span class="bracketed">Project rules instead of check scripts</span></h1>
+      <p class="lede">
+        Coding agents write a new <code>scripts/check-*.mjs</code> each time a project needs a check
+        that no linter provides. vibator gives those checks one home: a rule is one file in
+        <code>.vibator/</code>, and <code>npx vibator</code> runs them all.
+      </p>
+      <div class="command">
+        <pre tabindex="0"><code>{commands}</code></pre>
+        <button type="button" class="copy" data-copy={commands}>Copy</button>
+      </div>
+      <p class="note">
+        Requires Node 24 or later. <code>init</code> writes a starter rule in
+        <code>.vibator/</code>.
+      </p>
+      <div class="actions">
+        <a class="button primary" href="/docs/getting-started/">Get started</a>
+        <a class="button secondary" href="/docs/from-script-to-rule/">Turn a script into a rule</a>
+      </div>
+    </div>
+
+    <div class="demo">
+      <Window title=".vibator/colors-from-tokens.ts" class="source">
+        <Code code={colorsRule} lang="ts" theme="css-variables" />
+      </Window>
+      <Window title="npx vibator" class="output">
+        <p class="visually-hidden">
+          Running npx vibator reports one finding: src/components/card.css, line 11, column 23,
+          error from the rule colors-from-tokens: Hardcoded color #f97316. 1 error, 0 warnings.
+        </p>
+        <pre class="term" data-term aria-hidden="true"><span class="cmd"><span class="dim">$</span> <span class="typed">npx vibator</span><span class="caret" aria-hidden="true"></span></span><span class="stage"><span class="spin" aria-hidden="true"></span><span class="result"><span class="where">src/components/card.css:11:23</span> <span class="bad">error</span> colors-from-tokens  Hardcoded color #f97316
+   9 | &#125;
+  10 |
+<span class="bad">&gt; 11 | .card .badge &#123; color: #f97316; &#125;</span>
+
+<span class="dim">1 error(s), 0 warning(s)</span></span></span></pre>
+      </Window>
+    </div>
+  </div>
+</section>
+
+<script>
+  import { playRun } from "../../scripts/play-run.ts";
+
+  const term = document.querySelector<HTMLElement>("[data-term]");
+  if (term && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    void playRun(term);
+  }
+
+  for (const button of document.querySelectorAll<HTMLButtonElement>("button[data-copy]")) {
+    button.addEventListener("click", async () => {
+      await navigator.clipboard.writeText(button.dataset.copy ?? "");
+      button.textContent = "Copied";
+      setTimeout(() => {
+        button.textContent = "Copy";
+      }, 1500);
+    });
+  }
+</script>
+
+<style>
+  .hero {
+    padding-block: 5rem 6rem;
+    border-bottom: 1px solid var(--line);
+    background: var(--steel);
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: minmax(0, 4fr) minmax(0, 6fr);
+    gap: 3rem;
+    align-items: start;
+  }
+  h1 {
+    margin: 0;
+    font-size: clamp(2.3rem, 4.2vw, 3.8rem);
+    line-height: 1.04;
+    font-weight: 850;
+    letter-spacing: -0.025em;
+    text-wrap: balance;
+  }
+  .bracketed {
+    position: relative;
+    display: inline-block;
+    padding: 0.2em 0.45em 0.16em;
+  }
+  .bracketed::before,
+  .bracketed::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 0.3em;
+    border: 0.1em solid var(--signal);
+  }
+  .bracketed::before { left: 0; border-right: 0; }
+  .bracketed::after { right: 0; border-left: 0; }
+
+  .lede { margin: 1.5rem 0 0; color: var(--muted); font-size: 1.2rem; max-width: 34rem; }
+  .lede code, .note code {
+    font-size: 0.82em;
+    color: var(--ink);
+    background: var(--steel-deep);
+    padding: 0.05em 0.35em;
+    border-radius: 4px;
+  }
+
+  .command {
+    position: relative;
+    margin-top: 1.75rem;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--rail);
+  }
+  .command pre { margin: 0; padding: 0.9rem 5.5rem 0.9rem 1.1rem; font-size: 0.88rem; line-height: 1.75; overflow-x: auto; }
+  .copy {
+    position: absolute;
+    top: 0.6rem;
+    right: 0.6rem;
+    font: inherit;
+    font-size: 0.85rem;
+    padding: 0.3rem 0.75rem;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    background: var(--steel);
+    color: var(--ink);
+    cursor: pointer;
+  }
+  .copy:hover { border-color: var(--signal); }
+  .note { margin: 0.75rem 0 0; color: var(--muted); font-size: 0.95rem; }
+
+  .actions { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 1.75rem; }
+
+  .demo { position: relative; display: grid; gap: 1rem; }
+  .demo :global(.source pre) { font-size: 0.76rem; }
+  .demo :global(.output pre) { font-size: 0.74rem; }
+  /* The terminal plays one run on load: it types the command, spins through the rules, then shows the finding. */
+  /* The terminal wraps instead of scrolling: it is hidden from screen readers, so it cannot take focus. */
+  .term { white-space: pre-wrap; overflow-wrap: anywhere; }
+  .term .cmd { display: block; }
+  .term .stage { display: grid; }
+  .term .spin, .term .result { grid-area: 1 / 1; }
+  .term .spin { visibility: hidden; color: var(--muted); }
+  .term .caret { display: none; }
+  .term[data-state="typing"] .caret, .term[data-state="running"] .caret {
+    display: inline-block;
+    width: 0.55em;
+    height: 1.1em;
+    margin-left: 1px;
+    vertical-align: text-bottom;
+    background: var(--signal);
+  }
+  .term[data-state="typing"] .result, .term[data-state="running"] .result { visibility: hidden; }
+  .term[data-state="running"] .spin { visibility: visible; }
+  .term[data-state="running"] .caret { visibility: hidden; }
+  .term[data-state="done"] .result { animation: show-result 0.25s ease-out; }
+  @keyframes show-result {
+    from { opacity: 0; transform: translateY(4px); }
+    to { opacity: 1; transform: none; }
+  }
+  .demo .dim { color: var(--muted); }
+  .demo .where { text-decoration: underline; text-underline-offset: 3px; }
+  .demo .bad { color: var(--signal-text); }
+
+  @media (max-width: 960px) {
+    .lede { font-size: 1.1rem; }
+    .grid { grid-template-columns: minmax(0, 1fr); gap: 2.5rem; }
+    .hero { padding-block: 2.5rem 3rem; }
+  }
+</style>

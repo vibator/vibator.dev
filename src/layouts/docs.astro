@@ -1,0 +1,250 @@
+---
+/** A docs page of one version: the sidebar, the search, the version banner, the doc, and its contents. */
+import type { MarkdownHeading } from "astro";
+import "../styles/prose.css";
+import DocsMenu from "../components/docs-menu.astro";
+import DocsSearch from "../components/docs-search.astro";
+import DocsSidebar from "../components/docs-sidebar.astro";
+import { plainText, titleParts } from "../lib/doc-text.ts";
+import { allVersions, docPages } from "../lib/docs-content.ts";
+import { link } from "../lib/url.ts";
+import type { DocVersion } from "../lib/versions.ts";
+import Base from "./base.astro";
+
+/** Props of a docs page. */
+interface Props {
+  /** The page's slug under the version's path, or `undefined` for the docs home. */
+  slug?: string;
+  /** The title, Markdown inline code included. */
+  title: string;
+  /** The description. */
+  description: string;
+  /** The headings of the page, for the table of contents. */
+  headings?: readonly MarkdownHeading[];
+  /** The version of the docs the page belongs to. */
+  version: DocVersion;
+}
+
+const { slug, title, description, headings = [], version } = Astro.props;
+const versions = allVersions();
+const slugsOf = new Map(
+  await Promise.all(
+    versions.map(
+      async (each) =>
+        [each.id, (await docPages(each)).map((page) => page.slug)] as const,
+    ),
+  ),
+);
+const slugs = slugsOf.get(version.id) ?? [];
+/** Where a version leads from this page: the same page, or its docs home when it lacks it. */
+const hrefIn = (each: DocVersion) =>
+  link(
+    slug !== undefined && slugsOf.get(each.id)?.includes(slug)
+      ? `${each.path}${slug}/`
+      : each.path,
+  );
+const versionMenu = {
+  current: version,
+  links: versions.map((each) => ({ version: each, href: hrefIn(each) })),
+};
+const latest = versions.find((each) => each.latest) ?? version;
+const inLatest =
+  slug === undefined || slugsOf.get(latest.id)?.includes(slug) === true;
+const canonicalPath =
+  version.latest || !inLatest
+    ? undefined
+    : `${latest.path}${slug ? `${slug}/` : ""}`;
+const plainTitle = plainText(title);
+/**
+ * Escapes text for HTML.
+ *
+ * @param text The text.
+ * @returns The text with `&`, `<` and `>` escaped.
+ */
+const escapeHtml = (text: string) =>
+  text.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;");
+/** The title as HTML: its inline code in `<code>`, the rest as text. */
+const titleHtml = titleParts(title)
+  .map((part) =>
+    part.code ? `<code>${escapeHtml(part.text)}</code>` : escapeHtml(part.text),
+  )
+  .join("");
+const pageTitle = `${version.latest ? plainTitle : `${plainTitle} (${version.id})`} | vibator`;
+const bundle = `${version.latest ? "" : version.path}pagefind/`;
+const contents = headings.filter(
+  (heading) => heading.depth === 2 || heading.depth === 3,
+);
+---
+
+<Base
+  title={pageTitle}
+  description={description}
+  current="docs"
+  {...(canonicalPath === undefined ? {} : { canonicalPath })}
+>
+  <DocsSearch slot="header-search" bundle={bundle} />
+  <DocsMenu
+    slot="header-menu"
+    current={slug}
+    path={version.path}
+    slugs={slugs}
+    versions={versionMenu}
+  />
+  <div class="container docs-shell">
+    <DocsSidebar
+      current={slug}
+      path={version.path}
+      slugs={slugs}
+      versions={versionMenu}
+    />
+    <div class="docs-main">
+      <article class="doc" data-pagefind-body>
+        {
+          !version.latest && (
+            <p class="version-banner" role="note" data-pagefind-ignore>
+              {version.next
+                ? "These docs follow main and describe changes no release has yet."
+                : `These docs describe ${version.id}, an older release.`}{" "}
+              <a href={hrefIn(latest)}>
+                {inLatest
+                  ? "Read this page in the latest release."
+                  : "Read the latest release's docs."}
+              </a>
+            </p>
+          )
+        }
+        <h1 set:html={titleHtml} />
+        <div class="prose">
+          <slot />
+        </div>
+      </article>
+    </div>
+    {
+      contents.length > 0 && (
+        <nav class="toc" aria-labelledby="toc-title">
+          <h2 id="toc-title">On this page</h2>
+          <ul>
+            {contents.map((heading) => (
+              <li class={`depth-${heading.depth}`}>
+                <a href={`#${heading.slug}`}>{heading.text}</a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      )
+    }
+  </div>
+</Base>
+
+<style>
+  .docs-shell {
+    display: grid;
+    grid-template-columns: 14rem minmax(0, 46rem) 13rem;
+    justify-content: space-between;
+    gap: 3rem;
+    align-items: start;
+    padding-top: 2.5rem;
+  }
+
+  .docs-main {
+    min-width: 0;
+  }
+
+  .doc h1 {
+    margin: 0 0 1.5rem;
+    font-size: clamp(1.9rem, 4vw, 2.6rem);
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+
+  .doc h1 code {
+    font-size: 0.86em;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+
+  .version-banner {
+    margin: 0 0 1.5rem;
+    padding: 0.6rem 0.9rem;
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--signal);
+    border-radius: 4px;
+    background: var(--rail);
+    font-size: 0.92rem;
+  }
+
+  .version-banner a {
+    color: var(--signal-text);
+  }
+
+  .toc {
+    position: sticky;
+    top: 5.5rem;
+    max-height: calc(100vh - 7rem);
+    overflow-y: auto;
+    font-size: 0.85rem;
+  }
+
+  .toc h2 {
+    margin: 0 0 0.6rem;
+    color: var(--muted);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .toc ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border-left: 1px solid var(--line);
+  }
+
+  .toc a {
+    display: block;
+    padding: 0.2rem 0 0.2rem 0.75rem;
+    color: var(--muted);
+    text-decoration: none;
+  }
+
+  .toc a:hover {
+    color: var(--ink);
+  }
+
+  .toc .depth-3 a {
+    padding-left: 1.5rem;
+  }
+
+  @media (max-width: 1240px) {
+    .docs-shell {
+      grid-template-columns: 13rem minmax(0, 46rem);
+      justify-content: start;
+    }
+
+    .toc {
+      display: none;
+    }
+  }
+
+  @media (max-width: 860px) {
+    .docs-shell {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 1rem;
+      padding-top: 1.5rem;
+    }
+  }
+</style>
+
+<script>
+  import { addCopyButtons } from "../scripts/copy-code.ts";
+
+  addCopyButtons(document.querySelectorAll<HTMLPreElement>(".prose pre"));
+
+  // A table that scrolls sideways takes keyboard focus, so the arrow keys can scroll it.
+  for (const wrap of document.querySelectorAll<HTMLElement>(".prose .table-wrap")) {
+    wrap.tabIndex = 0;
+  }
+</script>

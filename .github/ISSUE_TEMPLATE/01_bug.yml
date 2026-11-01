@@ -7,16 +7,15 @@ body:
     attributes:
       value: |
         Thank you for reporting a bug. Note that the pages under
-        `/reference/` and the gate standards are synced from their source
-        repositories; if the problem is in the content itself, report it
-        on [vibator](https://github.com/vibator/vibator/issues) or
-        [vibator-gate](https://github.com/vibator/gate/issues) instead.
+        `/docs/` come from the vibator repository; if the
+        problem is in the content itself, report it on
+        [vibator](https://github.com/vibator/vibator/issues) instead.
   - type: input
     id: page
     attributes:
       label: Page
       description: The URL of the affected page, if the problem is on a specific page.
-      placeholder: https://vibator.dev/guide/getting-started
+      placeholder: https://vibator.dev/docs/getting-started/
   - type: textarea
     id: what-happened
     attributes:
@@ -38,7 +37,7 @@ body:
     id: coc
     attributes:
       label: Code of Conduct
-      description: By submitting this issue, you agree to follow our [Code of Conduct](https://github.com/vibator/vibator-dev/blob/main/CODE_OF_CONDUCT.md)
+      description: By submitting this issue, you agree to follow our [Code of Conduct](https://github.com/vibator/vibator.dev/blob/main/CODE_OF_CONDUCT.md)
       options:
         - label: I agree to follow Vibator's Code of Conduct
           required: true

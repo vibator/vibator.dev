@@ -1,0 +1,181 @@
+---
+/** The docs menu on a narrow screen: a header button that opens a panel with the site links and the docs. */
+import { repositoryUrl } from "../lib/project.ts";
+import { link } from "../lib/url.ts";
+import type { DocVersion } from "../lib/versions.ts";
+import DocsNavList from "./docs-nav-list.astro";
+import DocsVersions, { type VersionLink } from "./docs-versions.astro";
+
+/** Props of the menu. */
+interface Props {
+  /** The slug of the page shown. */
+  current?: string | undefined;
+  /** The site path of the version's docs. */
+  path: string;
+  /** The pages the version has. */
+  slugs: readonly string[];
+  /** The version shown and the others, for the version menu. */
+  versions: { current: DocVersion; links: readonly VersionLink[] };
+}
+
+const { current, path, slugs, versions } = Astro.props;
+---
+
+<button
+  type="button"
+  class="icon-button menu-toggle"
+  aria-label="Menu"
+  aria-haspopup="dialog"
+  aria-controls="docs-menu"
+  data-menu-open
+>
+  <svg
+    viewBox="0 0 24 24"
+    width="18"
+    height="18"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2"
+    stroke-linecap="round"
+    aria-hidden="true"
+  >
+    <path d="M4 7h16 M4 12h16 M4 17h16"></path>
+  </svg>
+</button>
+<dialog class="docs-drawer" id="docs-menu" aria-label="Menu">
+  <div class="drawer-body">
+    <div class="drawer-head">
+      <span class="drawer-title">Menu</span>
+      <button type="button" class="drawer-close" aria-label="Close the menu" data-menu-close>
+        <svg
+          viewBox="0 0 16 16"
+          width="16"
+          height="16"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.8"
+          stroke-linecap="round"
+          aria-hidden="true"
+        >
+          <path d="M3.5 3.5l9 9M12.5 3.5l-9 9"></path>
+        </svg>
+      </button>
+    </div>
+    <nav aria-label="Site">
+      <ul class="site-links">
+        <li><a href={link()}>Home</a></li>
+        <li><a href={link("docs/")}>Docs</a></li>
+        <li><a href={repositoryUrl}>GitHub</a></li>
+      </ul>
+    </nav>
+    <nav aria-label="Docs">
+      <div class="version"><DocsVersions {...versions} /></div>
+      <DocsNavList current={current} path={path} slugs={slugs} />
+    </nav>
+  </div>
+</dialog>
+
+<style>
+  .menu-toggle {
+    display: none;
+  }
+
+  .docs-drawer {
+    width: min(20rem, 86vw);
+    max-width: none;
+    height: 100dvh;
+    max-height: none;
+    margin: 0 0 0 auto;
+    padding: 0;
+    overflow: auto;
+    border: 0;
+    border-left: 1px solid var(--line);
+    background: var(--steel);
+    color: var(--ink);
+  }
+
+  /* The padding is the body's, so a press on the dialog itself is a press outside the panel. */
+  .drawer-body {
+    min-height: 100%;
+    padding: 0 1.25rem 1.5rem;
+  }
+
+  .docs-drawer::backdrop {
+    background: color-mix(in srgb, var(--ink) 35%, transparent);
+  }
+
+  .drawer-head {
+    position: sticky;
+    z-index: 10;
+    top: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 4rem;
+    margin: 0 -1.25rem;
+    padding: 0 1.25rem;
+    background: var(--steel);
+  }
+
+  .drawer-title {
+    font-weight: 700;
+  }
+
+  .drawer-close {
+    display: inline-grid;
+    place-items: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border: 0;
+    border-radius: 4px;
+    background: transparent;
+    color: var(--muted);
+    cursor: pointer;
+  }
+
+  .drawer-close:hover {
+    background: var(--steel-deep);
+    color: var(--ink);
+  }
+
+  .site-links {
+    display: grid;
+    gap: 0.1rem;
+    margin: 0 0 1.25rem;
+    padding: 0 0 1rem;
+    border-bottom: 1px solid var(--line);
+    list-style: none;
+  }
+
+  .site-links a {
+    display: block;
+    padding: 0.45rem 0;
+    color: var(--ink);
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .version {
+    margin-bottom: 1.5rem;
+  }
+
+  @media (max-width: 860px) {
+    .menu-toggle {
+      display: inline-grid;
+    }
+  }
+</style>
+
+<script>
+  const dialog = document.querySelector<HTMLDialogElement>("#docs-menu");
+  document
+    .querySelector("[data-menu-open]")
+    ?.addEventListener("click", () => dialog?.showModal());
+  document
+    .querySelector("[data-menu-close]")
+    ?.addEventListener("click", () => dialog?.close());
+  // A press on the dimmed page, outside the panel, closes it.
+  dialog?.addEventListener("click", (event) => {
+    if (event.target === dialog) dialog.close();
+  });
+</script>

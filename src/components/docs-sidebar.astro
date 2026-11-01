@@ -1,0 +1,56 @@
+---
+/** The docs sidebar on wide screens: the version menu, then the navigation. */
+import type { DocVersion } from "../lib/versions.ts";
+import DocsNavList from "./docs-nav-list.astro";
+import DocsVersions, { type VersionLink } from "./docs-versions.astro";
+
+/** Props of the sidebar. */
+interface Props {
+  /** The slug of the page shown. */
+  current?: string | undefined;
+  /** The site path of the version's docs. */
+  path: string;
+  /** The pages the version has. */
+  slugs: readonly string[];
+  /** The version shown and the others, for the version menu. */
+  versions: { current: DocVersion; links: readonly VersionLink[] };
+}
+
+const { current, path, slugs, versions } = Astro.props;
+---
+
+<nav class="docs-sidebar" aria-label="Docs">
+  <div class="version"><DocsVersions {...versions} /></div>
+  <div class="list"><DocsNavList current={current} path={path} slugs={slugs} /></div>
+</nav>
+
+<style>
+  /* The sidebar keeps the window's height and its list scrolls on its own. */
+  .docs-sidebar {
+    position: sticky;
+    top: 5.5rem;
+    display: flex;
+    flex-direction: column;
+    max-height: calc(100vh - 7rem);
+    font-size: 0.95rem;
+  }
+
+  .version {
+    flex: none;
+    margin-bottom: 1.5rem;
+  }
+
+  .list {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding-bottom: 1rem;
+  }
+
+  @media (max-width: 860px) {
+    .docs-sidebar {
+      display: none;
+    }
+  }
+</style>

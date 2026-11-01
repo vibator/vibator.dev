@@ -1,41 +1,65 @@
 # vibator.dev
 
-The vibator.dev website, built with VitePress. It documents vibator, the
-unopinionated linter for JavaScript and TypeScript.
+The vibator.dev website, built with Astro. It documents vibator, a small
+framework for project rules over JavaScript and TypeScript projects.
 
-Pages under `docs/reference/` are synced by `npm run docs:sync` from the
-`docs/design/` folder of the installed packages: `vibator` for the core pages,
-and the `@vibator/*` gate packages for the rest. Never edit them here; edit the
-design doc in the source repository, release it, and re-run the sync. The
-hand-written pages are the landing page (`docs/index.md`) and the guide
-(`docs/guide/`).
+The docs are not in this repository. They live in the vibator repository, in
+`docs/guide/` and `docs/design/`. `bun run collect` reads them into `.docs/`,
+which git ignores. Edit a doc in the vibator repository, never here.
 
-A synced page keeps its source filename so the relative links between those
-documents keep resolving.
+## Where the docs come from
 
-The site must build with `npm run docs:build`, which also fails on dead internal
-links.
+- The source is `$VIBATOR_SOURCE`, else `../vibator` next to this site, else a
+  bare clone in `.sources/vibator.git`.
+- `next` is the `docs/` folder of a local checkout as it is on disk, so
+  uncommitted edits show up. With the clone, `next` is `main`.
+- Each release tag from `v3.0.0` on is a version. The site keeps the latest
+  patch of each minor. Earlier releases are not published.
+- The latest release is at `/docs/<slug>/`, an older one at
+  `/docs/vX.Y/<slug>/`, and `next` at `/docs/next/<slug>/`. Before the first
+  release, `next` is at `/docs/<slug>/`.
+- The sidebar order and labels are in `src/lib/docs-nav.ts`.
+- A relative link between docs becomes a link to that page in the same version.
+  A link to another repository file goes to GitHub at the version's tag.
 
 ## Layout
 
 ```
-docs/
-  index.md      the landing page.
-  guide/        hand-written: what Vibator is, getting started, agent skills,
-                and the plugins and presets introduction.
-  reference/    synced from the packages' docs/design/. Do not edit here.
-  .vitepress/   VitePress config, nav, and sidebar.
+astro.config.mjs   the build: Sätteri Markdown, the doc plugins, redirects.
 scripts/
-  sync-docs.mjs imports the reference pages from the installed packages.
+  collect.ts       reads the docs of each version into .docs/.
+  search-index.ts  builds one Pagefind index per version after the build.
+.vibator/          the vibator rules this site runs on itself, after the build.
+  lib/site.ts      the `site` namespace: the pages of dist/ and an axe-core run.
+  links-resolve.ts every internal link and anchor of dist/ resolves.
+  pages-accessible.ts  every page passes axe-core for WCAG 2.2 A and AA.
+  markdown-*.ts    Markdown matches the remark format and is accessible.
+src/
+  pages/
+    index.astro    the landing page.
+    docs/          the docs routes, per version.
+  components/
+    home/          the landing page sections.
+    site-header.astro, site-footer.astro, theme-toggle.astro
+    docs-*.astro   the docs sidebar, menu, search, and version menu.
+  layouts/         base.astro (every page) and docs.astro (a docs page).
+  lib/             versions, doc paths, link rewriting, the sidebar.
+  styles/          tokens.css (colors and fonts), site.css, prose.css.
+public/            favicon.svg and CNAME, served as is.
+design/icons/      the icon candidates.
 ```
 
 ## Working on it
 
 ```sh
-npm run docs:sync     # import the reference pages from ../vibator
-npm run docs:dev      # local dev server, runs the sync first
-npm run docs:build    # production build, fails on dead internal links
-npm run verify        # everything CI runs
+bun run collect   # read the docs into .docs/
+bun run dev       # local dev server, collects first
+bun run build     # production build into dist/, with search
+bun run rules     # run the .vibator/ rules on the build
+bun run test      # the rule tests
+bun run docs:format  # format the Markdown with remark
+bun run preview   # serve the last build from dist/
+bun run verify    # everything CI runs
 ```
 
 ## Writing

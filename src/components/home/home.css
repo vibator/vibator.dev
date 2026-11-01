@@ -1,0 +1,53 @@
+/* The landing page's shared pieces: section headings and buttons. The column is the site's `.container`. */
+
+.home {
+  font-size: 1.125rem;
+  line-height: 1.6;
+}
+
+.home h2 {
+  margin: 0;
+  font-size: clamp(1.7rem, 3vw, 2.2rem);
+  line-height: 1.15;
+  font-weight: 800;
+  letter-spacing: -0.015em;
+}
+
+.home .button {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0.6rem 1.25rem;
+  border-radius: 6px;
+  font-weight: 700;
+  font-size: 1rem;
+  text-decoration: none;
+}
+.home .button.primary {
+  background: var(--ink);
+  color: var(--steel);
+  border: 1px solid var(--ink);
+}
+.home .button.primary:hover {
+  background: var(--signal-fill);
+  border-color: var(--signal-fill);
+  color: var(--on-signal-fill);
+}
+.home .button.secondary {
+  border: 1px solid var(--line);
+  background: var(--rail);
+  color: var(--ink);
+}
+.home .button.secondary:hover {
+  border-color: var(--signal);
+}
+.home a:focus-visible,
+.home button:focus-visible {
+  outline: 3px solid var(--signal);
+  outline-offset: 3px;
+}
+
+/* The last section of the page meets the footer, so the footer drops its top margin. */
+body:has(.home) .site-footer {
+  margin-top: 0;
+}

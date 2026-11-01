@@ -1,0 +1,84 @@
+---
+/** The groups and links of the docs navigation for one version; pages it lacks are left out. */
+import { docNav } from "../lib/docs-nav.ts";
+import { link } from "../lib/url.ts";
+
+/** Props of the list. */
+interface Props {
+  /** The slug of the page shown. */
+  current?: string | undefined;
+  /** The site path of the version's docs, such as `docs/` or `docs/v3.0/`. */
+  path: string;
+  /** The pages the version has. */
+  slugs: readonly string[];
+}
+
+const { current, path, slugs } = Astro.props;
+const groups = docNav
+  .map((group) => ({
+    ...group,
+    items: group.items.filter((item) => slugs.includes(item.slug)),
+  }))
+  .filter((group) => group.items.length > 0);
+---
+
+{
+  groups.map((group) => (
+    <div class="group">
+      <p class="group-label">{group.label}</p>
+      <ul>
+        {group.items.map((item) => (
+          <li>
+            <a
+              href={link(`${path}${item.slug}/`)}
+              aria-current={item.slug === current ? "page" : undefined}
+            >
+              {item.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  ))
+}
+
+<style>
+  .group + .group {
+    margin-top: 1.5rem;
+  }
+
+  .group-label {
+    margin: 0 0 0.4rem;
+    color: var(--muted);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border-left: 1px solid var(--line);
+  }
+
+  a {
+    display: block;
+    margin-left: -1px;
+    padding: 0.3rem 0 0.3rem 0.85rem;
+    border-left: 2px solid transparent;
+    color: var(--ink);
+    text-decoration: none;
+  }
+
+  a:hover {
+    color: var(--signal-text);
+  }
+
+  a[aria-current="page"] {
+    border-left-color: var(--signal);
+    color: var(--signal-text);
+    font-weight: 600;
+  }
+</style>

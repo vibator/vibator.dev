@@ -1,0 +1,18 @@
+---
+/** The landing page. */
+import "../components/home/home.css";
+import Hero from "../components/home/hero.astro";
+import Story from "../components/home/story.astro";
+import Base from "../layouts/base.astro";
+
+const description =
+  "vibator runs the checks your linters do not cover. A rule is one file in .vibator/ that reads the project and reports what to fix.";
+---
+
+<Base title="vibator: project rules instead of check scripts" description={description}>
+  <div class="home">
+    <Hero />
+    <Story />
+  </div>
+</Base>
+

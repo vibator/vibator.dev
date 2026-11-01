@@ -1,0 +1,188 @@
+---
+/** The site header: the mark and name, Docs, GitHub, the theme toggle, and on docs pages the search and menu. */
+import "../styles/site.css";
+import logoSource from "../assets/logo-light.svg?raw";
+import { repositoryUrl } from "../lib/project.ts";
+import { link } from "../lib/url.ts";
+import ThemeToggle from "./theme-toggle.astro";
+
+/** Props of the header. */
+interface Props {
+  /** The section the page belongs to, marked as current in the navigation. */
+  current?: "docs";
+}
+
+const { current } = Astro.props;
+// The SVG's own colors and title go: the header colors its strokes, and the link names the site.
+const logo = logoSource
+  .replace(/<style>.*?<\/style>/s, "")
+  .replace(/<title>.*?<\/title>/s, "")
+  .replace('role="img"', 'aria-hidden="true" focusable="false"');
+---
+
+<header class="site-header">
+  <div class="container bar">
+    <a class="brand" href={link()} aria-label="vibator home">
+      <span class="mark" set:html={logo} />
+      <span class="word">vibator</span>
+    </a>
+    {
+      Astro.slots.has("search") && (
+        <div class="search-slot">
+          <slot name="search" />
+        </div>
+      )
+    }
+    <nav class="main-nav" aria-label="Main">
+      <ul>
+        <li>
+          <a
+            class="nav-link"
+            href={link("docs/")}
+            aria-current={current === "docs" ? "page" : undefined}>Docs</a
+          >
+        </li>
+        <li>
+          <a class="nav-link github" href={repositoryUrl} aria-label="vibator on GitHub">
+            <svg viewBox="0 0 16 16" width="20" height="20" aria-hidden="true">
+              <path
+                fill="currentColor"
+                d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8Z"
+              ></path>
+            </svg>
+          </a>
+        </li>
+      </ul>
+    </nav>
+    <ThemeToggle />
+    {
+      Astro.slots.has("menu") && (
+        <div class="menu-slot">
+          <slot name="menu" />
+        </div>
+      )
+    }
+  </div>
+</header>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    background: color-mix(in srgb, var(--steel) 94%, transparent);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .bar {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    min-height: 4rem;
+  }
+
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-right: auto;
+    color: var(--ink);
+    font-size: 1.35rem;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    line-height: 1;
+    text-decoration: none;
+  }
+
+  .mark {
+    display: inline-flex;
+    width: 2rem;
+    height: 2rem;
+  }
+
+  .mark :global(svg) {
+    width: 100%;
+    height: 100%;
+  }
+
+  .mark :global(.is) {
+    stroke: var(--ink);
+  }
+
+  .mark :global(.as) {
+    stroke: var(--signal);
+  }
+
+  /* The word sits on the mark's optical center: Overpass carries extra room above its caps. */
+  .word {
+    padding-top: 0.12em;
+  }
+
+  .bar:has(.search-slot) .brand {
+    margin-right: 0;
+  }
+
+  .search-slot {
+    flex: 0 1 22rem;
+    margin: 0 auto 0 2rem;
+  }
+
+  .main-nav ul {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .nav-link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.5rem;
+    padding: 0.4rem 0.7rem;
+    border-radius: 4px;
+    color: var(--ink);
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .nav-link:hover {
+    color: var(--signal-text);
+  }
+
+  .nav-link[aria-current="page"] {
+    color: var(--signal-text);
+  }
+
+  .github {
+    padding-inline: 0.5rem;
+  }
+
+  /* A narrow docs page: the search shrinks to its magnifier and the menu holds the navigation. */
+  @media (max-width: 860px) {
+    .bar:has(.search-slot) .brand {
+      margin-right: auto;
+    }
+
+    .search-slot {
+      flex: none;
+      margin: 0;
+    }
+
+    .bar:has(.menu-slot) .main-nav {
+      display: none;
+    }
+  }
+
+  @media (max-width: 420px) {
+    .bar {
+      gap: 0.4rem;
+    }
+
+    .brand {
+      font-size: 1.2rem;
+    }
+  }
+</style>

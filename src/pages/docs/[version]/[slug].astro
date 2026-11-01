@@ -1,0 +1,29 @@
+---
+/** A docs page of `next`, at `docs/next/<slug>/`, or of an older release, at `docs/vX.Y/<slug>/`. */
+import VersionDoc from "../../../components/version-doc.astro";
+import { allVersions, docPages } from "../../../lib/docs-content.ts";
+import type { DocVersion } from "../../../lib/versions.ts";
+
+/**
+ * Lists one page per doc of each version that `docs/` does not show.
+ *
+ * @returns The paths and their versions.
+ */
+export async function getStaticPaths() {
+  const versions = allVersions().filter((version) => !version.latest);
+  const paths = await Promise.all(
+    versions.map(async (version) =>
+      (await docPages(version)).map((page) => ({
+        params: { version: version.id, slug: page.slug },
+        props: { version },
+      })),
+    ),
+  );
+  return paths.flat();
+}
+
+const { version } = Astro.props as { version: DocVersion };
+const slug = Astro.params.slug ?? "";
+---
+
+<VersionDoc version={version} slug={slug} />

@@ -1,0 +1,59 @@
+---
+/** The site footer: the license and the project's links. */
+import { githubUrl, repositoryUrl, siteRepositoryUrl } from "../lib/project.ts";
+import { link } from "../lib/url.ts";
+---
+
+<footer class="site-footer">
+  <div class="container row">
+    <p>vibator is <a href={githubUrl("LICENSE", "main")}>MIT licensed</a>.</p>
+    <nav aria-label="Footer">
+      <ul>
+        <li><a href={link("docs/")}>Docs</a></li>
+        <li><a href={repositoryUrl}>GitHub</a></li>
+        <li><a href={`${repositoryUrl}/releases`}>Releases</a></li>
+        <li><a href="https://www.npmjs.com/package/vibator">npm</a></li>
+        <li><a href={`${siteRepositoryUrl}/blob/main/ACCESSIBILITY.md`}>Accessibility</a></li>
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    margin-top: 6rem;
+    padding-block: 2rem;
+    border-top: 1px solid var(--line);
+    color: var(--muted);
+    font-size: 0.95rem;
+  }
+
+  .row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem 2rem;
+  }
+
+  p {
+    margin: 0;
+  }
+
+  ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 1.25rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  a {
+    color: var(--muted);
+  }
+
+  a:hover {
+    color: var(--ink);
+  }
+</style>

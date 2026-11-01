@@ -13,12 +13,12 @@ updates:
           - "minor"
           - "patch"
 
-  # --- NPM ---
-  - package-ecosystem: "npm"
+  # --- Bun ---
+  - package-ecosystem: "bun"
     directory: "/"
     schedule:
       interval: "weekly"
     groups:
       node-dependencies:
-        patterns: [ "*" ]
-        update-types: [ "minor", "patch" ]
+        patterns: ["*"]
+        update-types: ["minor", "patch"]

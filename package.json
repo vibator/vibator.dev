@@ -1,7 +1,7 @@
 {
   "name": "@vibator/vibator.dev",
   "version": "1.0.0",
-  "description": "The vibator.dev website, built with VitePress",
+  "description": "The vibator.dev website, built with Astro and Starlight",
   "type": "module",
   "license": "MIT",
   "author": "Josep Boix Requesens",
@@ -17,37 +17,47 @@
     "vibator",
     "documentation",
     "website",
-    "vitepress",
-    "quality",
+    "astro",
+    "docs",
     "coding-agents"
   ],
-  "engines": {
-    "node": ">=24"
-  },
   "scripts": {
-    "docs:sync": "node scripts/sync-docs.mjs",
-    "docs:dev": "npm run docs:sync && vitepress dev docs",
-    "docs:build": "npm run docs:sync && vitepress build docs",
-    "docs:preview": "vitepress preview docs",
+    "collect": "bun scripts/collect.ts",
+    "dev": "bun scripts/collect.ts && astro dev",
+    "build": "bun scripts/collect.ts && astro build && bun scripts/search-index.ts",
+    "preview": "astro preview",
     "format": "biome format --write",
     "lint": "biome check",
     "knip": "knip",
     "prepare": "husky",
-    "verify": "npm run lint && npm run knip && npm run docs:build"
+    "verify": "bun run lint && bun run docs:check && bun run knip && bun run test && bun run build && bun run rules",
+    "docs:check": "remark . --quiet --frail",
+    "docs:format": "remark . --quiet --output",
+    "test": "bun test ./.vibator/",
+    "rules": "bun --bun vibator"
+  },
+  "dependencies": {
+    "@astrojs/markdown-satteri": "0.4.6",
+    "@astrojs/sitemap": "3.7.4",
+    "@fontsource-variable/overpass": "5.3.0",
+    "@fontsource/jetbrains-mono": "5.3.0",
+    "astro": "7.4.5",
+    "satteri": "0.10.5"
   },
   "devDependencies": {
-    "@biomejs/biome": "^2.5.10",
-    "@commitlint/cli": "^21.2.2",
-    "@commitlint/config-conventional": "^21.2.0",
-    "@vibator/biome": "^1.0.2",
-    "@vibator/depcruise": "^1.0.2",
-    "@vibator/gate": "^1.0.2",
-    "@vibator/knip": "^1.0.2",
-    "@vibator/recommended": "^1.0.1",
+    "@biomejs/biome": "^2.6.4",
+    "@commitlint/cli": "^21.2.4",
+    "@commitlint/config-conventional": "^21.2.4",
+    "axe-core": "^4.14.0",
     "husky": "^9.1.7",
-    "knip": "^6.32.3",
-    "vibator": "^2.1.0",
-    "vitepress": "^2.0.0-alpha.19",
-    "vue": "^3.5.41"
+    "knip": "^6.44.1",
+    "pagefind": "1.6.0",
+    "playwright": "^1.64.1",
+    "remark": "^15.0.1",
+    "remark-cli": "^12.0.1",
+    "remark-frontmatter": "^5.0.0",
+    "remark-gfm": "^4.0.1",
+    "remark-validate-links": "^13.1.0",
+    "vibator": "^3.0.0"
   }
 }

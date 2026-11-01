@@ -1,0 +1,20 @@
+---
+/** A docs page of the latest version, at `docs/<slug>/`. */
+import VersionDoc from "../../components/version-doc.astro";
+import { docPages, latestVersion } from "../../lib/docs-content.ts";
+
+/**
+ * Lists one page per doc of the latest version.
+ *
+ * @returns The paths.
+ */
+export async function getStaticPaths() {
+  return (await docPages(latestVersion())).map((page) => ({
+    params: { slug: page.slug },
+  }));
+}
+
+const slug = Astro.params.slug ?? "";
+---
+
+<VersionDoc version={latestVersion()} slug={slug} />

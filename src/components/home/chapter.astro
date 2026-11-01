@@ -1,0 +1,86 @@
+---
+/** One step of the feature story: a number on the rail, the text, a docs link, and a visual. */
+
+/** Props of a chapter. */
+interface Props {
+  /** The step number, from 1. */
+  step: number;
+  /** The heading. */
+  title: string;
+  /** The docs page that covers the step. */
+  href: string;
+  /** The text of the docs link. */
+  linkText: string;
+}
+
+const { step, title, href, linkText } = Astro.props;
+const id = `step-${step}`;
+---
+
+<article class="chapter" aria-labelledby={id}>
+  <span class="step" aria-hidden="true">{step}</span>
+  <div class="text">
+    <h3 id={id}>{title}</h3>
+    <slot />
+    <a class="more" href={href}>{linkText}</a>
+  </div>
+  <div class="visual"><slot name="visual" /></div>
+</article>
+
+<style>
+  .chapter {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    gap: 3rem;
+    align-items: start;
+    padding: 0 0 5rem 4rem;
+  }
+  .step {
+    position: absolute;
+    left: 0;
+    top: 0;
+    display: grid;
+    place-items: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border: 2px solid var(--signal);
+    border-radius: 50%;
+    background: var(--steel);
+    color: var(--signal-text);
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    font-weight: 700;
+    z-index: 1;
+  }
+  h3 {
+    margin: 0.1rem 0 0.9rem;
+    font-size: clamp(1.35rem, 2.2vw, 1.7rem);
+    line-height: 1.2;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+  }
+  .text :global(p) { margin: 0 0 0.9rem; color: var(--muted); max-width: 34rem; }
+  .text :global(p code) {
+    font-size: 0.85em;
+    color: var(--ink);
+    background: var(--steel-deep);
+    padding: 0.05em 0.35em;
+    border-radius: 4px;
+  }
+  .more {
+    display: inline-block;
+    margin-top: 0.3rem;
+    font-weight: 600;
+    font-size: 0.98rem;
+    text-decoration-color: var(--signal);
+    text-decoration-thickness: 2px;
+    text-underline-offset: 4px;
+  }
+  .visual { min-width: 0; display: grid; gap: 1rem; }
+
+  @media (max-width: 960px) {
+    .chapter { grid-template-columns: minmax(0, 1fr); gap: 1.5rem; padding: 0 0 3.5rem 3rem; }
+    .step { width: 2rem; height: 2rem; font-size: 0.82rem; }
+  }
+</style>

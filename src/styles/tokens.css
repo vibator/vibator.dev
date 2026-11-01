@@ -1,0 +1,91 @@
+/* Design tokens: galvanized steel greys and safety orange, light and dark. */
+:root {
+  color-scheme: light;
+
+  --font-sans: "Overpass Variable", "Overpass", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", monospace;
+
+  --steel: #e6e9ec;
+  --steel-deep: #d3d8dd;
+  --rail: #f4f6f7;
+  --ink: #1a2027;
+  --muted: #4f5964;
+  --signal: #e4570b;
+  --signal-text: #b5430a;
+  /* A filled orange surface and the text on it, at 4.5:1 or more. */
+  --signal-fill: #b5430a;
+  --on-signal-fill: #ffffff;
+  --line: #c3c9cf;
+  --term-bg: #1a2027;
+  --term-ink: #e6e9ec;
+  --term-dim: #8a949e;
+  --term-signal: #ff8a47;
+
+  --astro-code-foreground: #1a2027;
+  --astro-code-background: transparent;
+  --astro-code-token-keyword: #b5430a;
+  --astro-code-token-string: #2f6b4f;
+  --astro-code-token-string-expression: #2f6b4f;
+  --astro-code-token-comment: #4f5964;
+  --astro-code-token-function: #1f4f86;
+  --astro-code-token-constant: #1f4f86;
+  --astro-code-token-parameter: #1a2027;
+  --astro-code-token-punctuation: #4f5964;
+  --astro-code-token-link: #b5430a;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+
+    --steel: #15191e;
+    --steel-deep: #1d2228;
+    --rail: #1d2228;
+    --ink: #e6e9ec;
+    --muted: #a3acb5;
+    --signal: #ff7a2e;
+    --signal-text: #ff9a5c;
+    --signal-fill: #ff7a2e;
+    --on-signal-fill: #15191e;
+    --line: #343c45;
+    --term-bg: #0f1215;
+
+    --astro-code-foreground: #e6e9ec;
+    --astro-code-token-keyword: #ff9a5c;
+    --astro-code-token-string: #8fd1ad;
+    --astro-code-token-string-expression: #8fd1ad;
+    --astro-code-token-comment: #8a949e;
+    --astro-code-token-function: #8cb8ef;
+    --astro-code-token-constant: #8cb8ef;
+    --astro-code-token-parameter: #e6e9ec;
+    --astro-code-token-punctuation: #a3acb5;
+    --astro-code-token-link: #ff9a5c;
+  }
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+
+  --steel: #15191e;
+  --steel-deep: #1d2228;
+  --rail: #1d2228;
+  --ink: #e6e9ec;
+  --muted: #a3acb5;
+  --signal: #ff7a2e;
+  --signal-text: #ff9a5c;
+  --signal-fill: #ff7a2e;
+  --on-signal-fill: #15191e;
+  --line: #343c45;
+  --term-bg: #0f1215;
+
+  --astro-code-foreground: #e6e9ec;
+  --astro-code-token-keyword: #ff9a5c;
+  --astro-code-token-string: #8fd1ad;
+  --astro-code-token-string-expression: #8fd1ad;
+  --astro-code-token-comment: #8a949e;
+  --astro-code-token-function: #8cb8ef;
+  --astro-code-token-constant: #8cb8ef;
+  --astro-code-token-parameter: #e6e9ec;
+  --astro-code-token-punctuation: #a3acb5;
+  --astro-code-token-link: #ff9a5c;
+}

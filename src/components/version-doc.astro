@@ -1,0 +1,37 @@
+---
+/** One docs page of one version, rendered from that version's collected Markdown. */
+import { render } from "astro:content";
+import Docs from "../layouts/docs.astro";
+import { docPages, versionEntries } from "../lib/docs-content.ts";
+import type { DocVersion } from "../lib/versions.ts";
+
+/** Props of the page. */
+interface Props {
+  /** The version. */
+  version: DocVersion;
+  /** The page's slug. */
+  slug: string;
+}
+
+const { version, slug } = Astro.props;
+const page = (await docPages(version)).find(
+  (candidate) => candidate.slug === slug,
+);
+const entry = (await versionEntries(version)).find(
+  (candidate) => candidate.id === slug,
+);
+if (page === undefined || entry === undefined) {
+  throw new Error(`${version.id} has no page ${slug}.`);
+}
+const { Content, headings } = await render(entry);
+---
+
+<Docs
+  slug={page.slug}
+  title={page.title}
+  description={page.description}
+  headings={headings}
+  version={version}
+>
+  <Content />
+</Docs>

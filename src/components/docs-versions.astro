@@ -1,0 +1,150 @@
+---
+/** The docs version menu: each entry leads to the same page in that version, or to its docs home. */
+import type { DocVersion } from "../lib/versions.ts";
+
+/** A version in the menu, with where it leads from this page. */
+export interface VersionLink {
+  /** The version. */
+  readonly version: DocVersion;
+  /** The address of this page in it, or of its docs home. */
+  readonly href: string;
+}
+
+/** Props of the menu. */
+interface Props {
+  /** The version shown. */
+  current: DocVersion;
+  /** Every version, in order. */
+  links: readonly VersionLink[];
+}
+
+const { current, links } = Astro.props;
+---
+
+<details class="versions" data-versions>
+  <summary>
+    <span class="visually-hidden">Docs version:</span>
+    <span class="choice">
+      <span class="name">{current.id}</span>
+      <span class="note">{current.note}</span>
+    </span>
+    <svg class="chevron" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true">
+      <path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6"></path>
+    </svg>
+  </summary>
+  <ul class="menu">
+    {
+      links.map(({ version, href }) => (
+        <li>
+          <a href={href} aria-current={version.id === current.id ? "page" : undefined}>
+            <span class="choice">
+              <span class="name">{version.id}</span>
+              <span class="note">{version.note}</span>
+            </span>
+            {version.id === current.id && (
+              <svg class="check" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true">
+                <path d="M3.5 8.5l3 3 6-7" fill="none" stroke="currentColor" stroke-width="1.8" />
+              </svg>
+            )}
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</details>
+
+<script>
+  import { wireVersionMenus } from "../scripts/version-menu.ts";
+
+  wireVersionMenus();
+</script>
+
+<style>
+  .versions {
+    position: relative;
+  }
+
+  summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    padding: 0.45rem 0.75rem;
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    background: var(--rail);
+    cursor: pointer;
+    list-style: none;
+  }
+
+  summary::-webkit-details-marker {
+    display: none;
+  }
+
+  summary:hover {
+    border-color: var(--muted);
+  }
+
+  .chevron {
+    flex-shrink: 0;
+    color: var(--muted);
+    transition: transform 0.15s;
+  }
+
+  .versions[open] .chevron {
+    transform: rotate(180deg);
+  }
+
+  .choice {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    line-height: 1.35;
+  }
+
+  .name {
+    color: var(--ink);
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    font-weight: 600;
+  }
+
+  .note {
+    color: var(--muted);
+    font-size: 0.78rem;
+  }
+
+  .menu {
+    position: absolute;
+    z-index: 5;
+    top: calc(100% + 0.35rem);
+    right: 0;
+    left: 0;
+    margin: 0;
+    padding: 0.25rem;
+    list-style: none;
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    background: var(--rail);
+    box-shadow: 0 10px 28px rgb(0 0 0 / 14%);
+  }
+
+  .menu a {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    padding: 0.4rem 0.6rem;
+    border-radius: 3px;
+    text-decoration: none;
+  }
+
+  .menu a:hover {
+    background: var(--steel-deep);
+  }
+
+  .check {
+    flex-shrink: 0;
+    color: var(--signal);
+  }
+</style>

@@ -1,0 +1,211 @@
+/* The docs' rendered Markdown. Code colors come from the css-variables Shiki theme in tokens.css. */
+.prose {
+  font-size: 1rem;
+  line-height: 1.7;
+}
+
+.prose > :first-child {
+  margin-top: 0;
+}
+
+.prose h2,
+.prose h3,
+.prose h4 {
+  line-height: 1.25;
+  font-weight: 750;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+
+.prose h2 {
+  font-size: 1.5rem;
+  margin: 2.4em 0 0.6em;
+  padding-top: 0.2em;
+}
+
+.prose h3 {
+  font-size: 1.2rem;
+  margin: 2em 0 0.5em;
+}
+
+.prose h4 {
+  font-size: 1rem;
+  margin: 1.6em 0 0.4em;
+}
+
+.prose p {
+  margin: 0 0 1em;
+}
+
+.prose a {
+  color: var(--signal-text);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+}
+
+.prose a:hover {
+  text-decoration-thickness: 2px;
+}
+
+.prose ul,
+.prose ol {
+  margin: 0 0 1em;
+  padding-left: 1.4em;
+}
+
+.prose li + li {
+  margin-top: 0.25em;
+}
+
+.prose li::marker {
+  color: var(--muted);
+}
+
+.prose blockquote {
+  margin: 0 0 1em;
+  padding: 0.1em 1em;
+  border-left: 3px solid var(--signal);
+  color: var(--muted);
+}
+
+.prose hr {
+  margin: 2em 0;
+  border: 0;
+  border-top: 1px solid var(--line);
+}
+
+.prose img {
+  height: auto;
+}
+
+/* Inline code. */
+.prose :not(pre) > code {
+  padding: 0.1em 0.35em;
+  border-radius: 3px;
+  background: var(--steel-deep);
+  font-size: 0.85em;
+  overflow-wrap: break-word;
+}
+
+/* Link code sits on the lighter surface, so the orange link text keeps 4.5:1. */
+.prose a code {
+  color: inherit;
+  background: var(--rail);
+}
+
+/* Tables: full width in a bordered box that scrolls sideways on a narrow screen. */
+.prose .table-wrap {
+  margin: 0 0 1.5em;
+  overflow-x: auto;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  background: var(--rail);
+}
+
+.prose table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.92rem;
+  line-height: 1.55;
+}
+
+.prose th,
+.prose td {
+  padding: 0.55rem 0.8rem;
+  text-align: left;
+  vertical-align: top;
+}
+
+.prose th {
+  background: var(--steel-deep);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.prose tr + tr td,
+.prose thead + tbody tr:first-child td {
+  border-top: 1px solid var(--line);
+}
+
+.prose td code {
+  font-size: 0.85em;
+}
+
+/* The first column holds declarations: it keeps a readable width and breaks after punctuation. */
+.prose pre code {
+  padding: 0;
+  background: none;
+  font-size: 1em;
+}
+
+.prose td:first-child {
+  min-width: 12rem;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  font-variant-ligatures: none;
+}
+
+.prose td:first-child code {
+  padding: 0;
+  background: none;
+  font-size: 1em;
+}
+
+.prose td:first-child a {
+  overflow-wrap: anywhere;
+}
+
+/* Code blocks. */
+.code-block {
+  position: relative;
+  margin: 0 0 1.25em;
+}
+
+.prose pre {
+  margin: 0 0 1.25em;
+  padding: 0.9rem 1rem;
+  overflow-x: auto;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  background: var(--rail);
+  font-size: 0.84rem;
+  line-height: 1.6;
+  tab-size: 2;
+}
+
+.prose pre.astro-code {
+  background: var(--rail);
+}
+
+.code-block pre {
+  margin: 0;
+}
+
+.copy-button {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  padding: 0.15rem 0.6rem;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  background: var(--steel);
+  color: var(--muted);
+  font-size: 0.75rem;
+  cursor: pointer;
+  opacity: 0;
+}
+
+.copy-button:hover {
+  color: var(--ink);
+}
+
+.code-block:hover .copy-button,
+.copy-button:focus-visible {
+  opacity: 1;
+}
+
+@media (hover: none) {
+  .copy-button {
+    opacity: 1;
+  }
+}

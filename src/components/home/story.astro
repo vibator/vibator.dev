@@ -1,0 +1,364 @@
+---
+/** The feature story: ten steps from replacing custom scripts to one config shared across repositories, then the docs. */
+import { Code } from "astro:components";
+import Chapter from "./chapter.astro";
+import {
+  baseConfigSample,
+  configSample,
+  extendsSample,
+  jsonFinding,
+  pluginModule,
+  pluginSample,
+  ruleTest,
+  scopeSample,
+} from "./samples.ts";
+import Window from "./window.astro";
+
+/** What a check script writes for itself, and what a rule gets from vibator instead. */
+const plumbing = [
+  [
+    "Find files",
+    "<code>globSync</code> and its own excludes",
+    "<code>project.files</code>",
+  ],
+  [
+    "Read them",
+    "<code>readFileSync</code>, regex loops",
+    "<code>text.search</code>, <code>ts.parse</code>",
+  ],
+  ["Report", "<code>console.error</code>", "One report format"],
+  ["Fail", "<code>process.exit(1)</code>", "A severity per rule"],
+  ["Fix", "By hand", "<code>--write</code>"],
+];
+
+/** The namespaces a rule reads the project through. */
+const namespaces = [
+  ["project", "Files and folders"],
+  ["text", "Lines and search"],
+  ["json", "Values and key paths"],
+  ["ts", "Syntax trees and types"],
+  ["package", "package.json manifests"],
+  ["module", "Import resolution"],
+  ["git", "Staged and changed files"],
+  ["shell", "Run a command"],
+  ["glob", "Match paths"],
+  ["ignore", "Ignore markers"],
+];
+
+/** The skills vibator ships, with what each does for an agent. */
+const skills = [
+  [
+    "writing-vibator-rules",
+    "Writes a rule in .vibator/ instead of a check script.",
+  ],
+  [
+    "fixing-vibator-findings",
+    "Acts on each finding's message, expected, and fix.",
+  ],
+  [
+    "configuring-vibator",
+    "Sets severities, options, and plugins in .vibator.json.",
+  ],
+];
+
+/** The docs pages the closing block links to, by group. */
+const docs = [
+  {
+    group: "Guide",
+    pages: [
+      ["What is vibator", "/docs/what-is-vibator/"],
+      ["Getting started", "/docs/getting-started/"],
+      ["From script to rule", "/docs/from-script-to-rule/"],
+      ["Plugins and shared configuration", "/docs/plugins/"],
+      ["Agent skills", "/docs/agent-skills/"],
+    ],
+  },
+  {
+    group: "Reference",
+    pages: [
+      ["The vibator namespace", "/docs/vibator-namespace/"],
+      ["Rule definition", "/docs/rule-definition/"],
+      ["Configuration", "/docs/configuration/"],
+      ["Command line", "/docs/command-line/"],
+    ],
+  },
+];
+---
+
+<section class="story" aria-labelledby="story-title">
+  <div class="container">
+    <header class="intro">
+      <h2 id="story-title">From custom scripts to a rule set</h2>
+      <p>Every check script becomes a rule. Each step below builds on the one before it.</p>
+    </header>
+
+    <div class="chapters">
+      <Chapter step={1} title="Replace check scripts with rules" href="/docs/from-script-to-rule/" linkText="From script to rule">
+        <p>
+          A check script writes its own file walk, parsing, output, and exit code. A rule is the check
+          alone, one file in <code>.vibator/</code>. vibator does the rest.
+        </p>
+        <div class="table" slot="visual">
+          <table>
+            <thead><tr><th scope="col"></th><th scope="col">A check script</th><th scope="col">A rule</th></tr></thead>
+            <tbody>
+              {plumbing.map(([task, script, rule]) => (
+                <tr><th scope="row">{task}</th><td set:html={script} /><td set:html={rule} /></tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </Chapter>
+
+      <Chapter step={2} title="Read the whole project through one API" href="/docs/vibator-namespace/" linkText="Namespace reference">
+        <p>
+          A rule reads files, JSON, TypeScript syntax trees, <code>package.json</code>, git, and the
+          shell through <code>vibator</code>. It never imports <code>fs</code>.
+        </p>
+        <p>It sees every file at once, so it can compare files with each other.</p>
+        <ul class="namespaces" slot="visual">
+          {namespaces.map(([name, what]) => <li><code>vibator.{name}</code><span>{what}</span></li>)}
+        </ul>
+      </Chapter>
+
+      <Chapter step={3} title="Findings that say what to do" href="/docs/rule-definition/" linkText="Rule definition">
+        <p>
+          Each finding keeps three fields apart: <code>message</code> says what is wrong,
+          <code>expected</code> states the standard, and <code>fix</code> gives the next action.
+        </p>
+        <p>A person or an agent acts on a finding without reading the rule.</p>
+        <Window slot="visual" title="npx vibator --reporter json">
+          <Code code={jsonFinding} lang="json" theme="css-variables" />
+        </Window>
+      </Chapter>
+
+      <Chapter step={4} title="One report for every rule" href="/docs/command-line/" linkText="Reporters">
+        <p>
+          Every rule reports in the same format, with the file, line, column, and the code around it.
+        </p>
+        <p>
+          <code>--reporter json</code> feeds your own tools. <code>--reporter sarif</code> feeds code
+          scanning.
+        </p>
+        <Window slot="visual" title="npx vibator">
+          <pre tabindex="0"><span class="where">src/config.ts:2:20</span> <span class="bad">error</span> env-example  API_KEY is read but not in .env.example
+  1 | export const url = process.env.API_URL;
+<span class="bad">&gt; 2 | export const key = process.env.API_KEY;</span>
+
+<span class="dim">1 error(s), 0 warning(s)</span></pre>
+        </Window>
+      </Chapter>
+
+      <Chapter step={5} title="Fix what a rule can fix" href="/docs/rule-definition/" linkText="Rule definition">
+        <p>
+          A rule can implement <code>fix</code>. With <code>--write</code>, vibator runs the check, the
+          fix, and the check again.
+        </p>
+        <p>The report shows only what the fix left.</p>
+        <ol class="loop" slot="visual" aria-label="The --write loop">
+          <li><code>check</code><span>Finds the problems</span></li>
+          <li><code>fix</code><span>Changes the files</span></li>
+          <li><code>check</code><span>Reports what is left</span></li>
+        </ol>
+      </Chapter>
+
+      <Chapter step={6} title="Run it where the work happens" href="/docs/configuration/" linkText="Configuration">
+        <p>
+          <code>--staged</code>, <code>--changed</code>, and <code>--since</code> scope a run to the
+          files git reports, for a pre-commit hook or a pull request job.
+        </p>
+        <p>
+          <code>.vibator.json</code> sets a severity per rule. An error fails the run, a warning
+          reports and passes.
+        </p>
+        <Fragment slot="visual">
+          <Window title="Scoped runs">
+            <Code code={scopeSample} lang="sh" theme="css-variables" />
+          </Window>
+          <Window title=".vibator.json">
+            <Code code={configSample} lang="json" theme="css-variables" />
+          </Window>
+        </Fragment>
+      </Chapter>
+
+      <Chapter step={7} title="Test rules like code" href="/docs/getting-started/#test-it" linkText="Test a rule">
+        <p>
+          <code>runRule</code> from <code>vibator/testing</code> runs one rule against content you
+          write in the test. It works in any test runner.
+        </p>
+        <Window slot="visual" title="colors-from-tokens.test.ts">
+          <Code code={ruleTest} lang="ts" theme="css-variables" />
+        </Window>
+      </Chapter>
+
+      <Chapter step={8} title="Let agents write and fix rules" href="/docs/agent-skills/" linkText="Agent skills">
+        <p>
+          vibator ships three skills for Claude Code and compatible agents.
+          <code>npx vibator skills --install</code> copies them into the project.
+        </p>
+        <p>An agent then writes a rule instead of a script and fixes what the rules report.</p>
+        <ul class="skills" slot="visual">
+          {skills.map(([name, what]) => <li><code>{name}</code><span>{what}</span></li>)}
+        </ul>
+      </Chapter>
+
+      <Chapter step={9} title="Extend the namespace with plugins" href="/docs/plugins/" linkText="Plugins and shared configuration">
+        <p>
+          A plugin is a package that adds its own namespace to <code>vibator</code> with
+          <code>defineNamespace</code>, such as <code>vibator.i18n</code>. Every rule in a project that
+          loads it reads the namespace like the built-in ones, with its types.
+        </p>
+        <p>A plugin can also ship rules that use its namespace.</p>
+        <Fragment slot="visual">
+          <Window title="@acme/vibator-i18n/src/namespace.ts">
+            <Code code={pluginModule} lang="ts" theme="css-variables" />
+          </Window>
+          <Window title=".vibator.json">
+            <Code code={pluginSample} lang="json" theme="css-variables" />
+          </Window>
+        </Fragment>
+      </Chapter>
+
+      <Chapter step={10} title="Share one config across repositories" href="/docs/configuration/#extends" linkText="extends">
+        <p>
+          A base config sets the plugins and the severities once. Each repository extends it and
+          overrides only what differs.
+        </p>
+        <p>Plugins add up, and rules merge by id, so the project's severity wins.</p>
+        <Fragment slot="visual">
+          <Window title="@acme/vibator-config/vibator.json">
+            <Code code={baseConfigSample} lang="json" theme="css-variables" />
+          </Window>
+          <Window title=".vibator.json">
+            <Code code={extendsSample} lang="json" theme="css-variables" />
+          </Window>
+        </Fragment>
+      </Chapter>
+    </div>
+
+    <div class="docs">
+      <div class="docs-text">
+        <h2>Read the docs</h2>
+        <p>The guides go from install to your first rule. The reference covers every API and flag.</p>
+        <a class="button primary" href="/docs/getting-started/">Get started</a>
+      </div>
+      {docs.map((each) => (
+        <nav class="doc-group" aria-label={each.group}>
+          <h3>{each.group}</h3>
+          <ul>{each.pages.map(([title, href]) => <li><a href={href}>{title}</a></li>)}</ul>
+        </nav>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .story { padding-block: 5rem 4rem; background: var(--rail); }
+  .intro { margin-bottom: 3.5rem; }
+  .intro p { margin: 0.75rem 0 0; color: var(--muted); max-width: 40rem; }
+
+  /* The rail the step numbers sit on. It fades out at the last step. */
+  .chapters { position: relative; }
+  .chapters::before {
+    content: "";
+    position: absolute;
+    left: calc(1.125rem - 1px);
+    top: 0.5rem;
+    bottom: 5rem;
+    width: 2px;
+    background: linear-gradient(var(--signal), var(--line) 85%, transparent);
+  }
+
+  .table, .namespaces, .skills, .loop {
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--steel);
+  }
+  .table { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
+  th, td { padding: 0.6rem 0.9rem; text-align: left; vertical-align: top; border-bottom: 1px solid var(--line); }
+  tr:last-child th, tr:last-child td { border-bottom: 0; }
+  thead th { font-size: 0.85rem; font-weight: 700; background: var(--steel-deep); }
+  thead th:last-child { color: var(--signal-text); }
+  tbody th { font-weight: 600; white-space: nowrap; }
+  td:nth-child(2) { color: var(--muted); }
+  td :global(code) { font-size: 0.85em; overflow-wrap: break-word; }
+
+  .namespaces, .skills { margin: 0; padding: 0; list-style: none; display: grid; }
+  .namespaces { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .namespaces li, .skills li {
+    display: grid;
+    gap: 0.1rem;
+    padding: 0.65rem 0.9rem;
+    border-bottom: 1px solid var(--line);
+  }
+  .namespaces li:nth-child(odd) { border-right: 1px solid var(--line); }
+  .namespaces li:nth-last-child(-n + 2), .skills li:last-child { border-bottom: 0; }
+  .namespaces code, .skills code { font-size: 0.85rem; color: var(--ink); }
+  .namespaces span, .skills span { font-size: 0.92rem; color: var(--muted); }
+
+  .loop {
+    margin: 0;
+    padding: 1.25rem;
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 2rem;
+  }
+  .loop li {
+    position: relative;
+    display: grid;
+    gap: 0.2rem;
+    padding: 0.8rem 0.9rem;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    background: var(--rail);
+  }
+  .loop li + li::before {
+    content: "";
+    position: absolute;
+    left: -1.6rem;
+    top: 50%;
+    width: 1.2rem;
+    border-top: 2px solid var(--signal);
+  }
+  .loop code { font-size: 0.95rem; font-weight: 700; color: var(--ink); }
+  .loop span { font-size: 0.9rem; color: var(--muted); }
+
+  .where { text-decoration: underline; text-underline-offset: 3px; }
+  .bad { color: var(--signal-text); }
+  .dim { color: var(--muted); }
+
+  .docs {
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) repeat(2, minmax(0, 1fr));
+    gap: 2.5rem;
+    padding: 2.5rem;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--steel);
+  }
+  .docs-text p { margin: 0.75rem 0 1.5rem; color: var(--muted); max-width: 30rem; }
+  .doc-group h3 { margin: 0.4rem 0 0.75rem; font-size: 0.95rem; font-weight: 700; }
+  .doc-group ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 0.45rem; }
+  .doc-group a { text-decoration-color: var(--line); text-underline-offset: 3px; }
+  .doc-group a:hover { text-decoration-color: var(--signal); }
+
+  @media (max-width: 960px) {
+    .story { padding-block: 3.5rem 3rem; }
+    .chapters::before { left: calc(1rem - 1px); }
+    .docs { grid-template-columns: repeat(2, minmax(0, 1fr)); padding: 1.75rem; }
+    .docs-text { grid-column: 1 / -1; }
+  }
+  @media (max-width: 640px) {
+    /* The task names repeat the cells, so a phone shows the two columns that compare. */
+    thead th:first-child, tbody th { display: none; }
+    th, td { padding: 0.55rem 0.7rem; }
+    .namespaces { grid-template-columns: minmax(0, 1fr); }
+    .namespaces li:nth-child(odd) { border-right: 0; }
+    .namespaces li:nth-last-child(2) { border-bottom: 1px solid var(--line); }
+    .loop { grid-template-columns: minmax(0, 1fr); gap: 1.25rem; }
+    .loop li + li::before { left: 50%; top: -1.1rem; width: 0; height: 0.95rem; border-top: 0; border-left: 2px solid var(--signal); }
+    .docs { grid-template-columns: minmax(0, 1fr); }
+  }
+</style>

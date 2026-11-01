@@ -1,0 +1,70 @@
+---
+/** The docs search in the header: Pagefind's search button and modal, over the index of the version shown. */
+import { link } from "../lib/url.ts";
+
+/** Props of the search. */
+interface Props {
+  /** The site path of the search index of the version shown, such as `docs/next/pagefind/`. */
+  bundle: string;
+}
+
+const bundlePath = link(Astro.props.bundle);
+---
+
+<link rel="stylesheet" href={`${bundlePath}pagefind-component-ui.css`} />
+<script is:inline defer src={`${bundlePath}pagefind-component-ui.js`}></script>
+<div class="docs-search">
+  <pagefind-config bundle-path={bundlePath}></pagefind-config>
+  <pagefind-modal-trigger placeholder="Search the docs"></pagefind-modal-trigger>
+  <pagefind-modal></pagefind-modal>
+</div>
+
+<style>
+  /* Pagefind's components read these variables; they follow the site's colors in both themes. */
+  .docs-search {
+    --pf-font: var(--font-sans);
+    --pf-text: var(--ink);
+    --pf-text-secondary: var(--muted);
+    --pf-text-muted: var(--muted);
+    --pf-background: var(--rail);
+    --pf-border: var(--line);
+    --pf-border-focus: var(--signal);
+    --pf-outline-focus: var(--signal);
+    --pf-hover: var(--steel-deep);
+    --pf-mark: var(--signal-text);
+    --pf-border-radius: 6px;
+    --pf-modal-backdrop: rgb(15 18 21 / 0.55);
+    display: flex;
+    align-items: center;
+    min-width: 0;
+  }
+
+  .docs-search :global(pagefind-modal-trigger) {
+    width: 100%;
+    max-width: 22rem;
+  }
+
+  /*
+   * A narrow screen shows the magnifier alone. The button keeps its name, "Search the docs".
+   * pagefind weights its selectors with three IDs, so these overrides need !important.
+   */
+  /* biome-ignore-start lint/complexity/noImportantStyles: pagefind's selectors outweigh any class selector */
+  @media (max-width: 860px) {
+    .docs-search :global(pagefind-modal-trigger) {
+      width: auto;
+    }
+
+    .docs-search :global(.pf-trigger-text),
+    .docs-search :global(.pf-trigger-shortcut) {
+      display: none !important;
+    }
+
+    .docs-search :global(.pf-trigger-btn) {
+      width: 2.5rem !important;
+      height: 2.5rem !important;
+      padding: 0 !important;
+      justify-content: center !important;
+    }
+  }
+  /* biome-ignore-end lint/complexity/noImportantStyles: pagefind's selectors outweigh any class selector */
+</style>

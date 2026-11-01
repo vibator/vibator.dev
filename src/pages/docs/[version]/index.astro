@@ -1,0 +1,24 @@
+---
+/** The home of a version's docs, such as `docs/next/`: it opens the version's first guide page. */
+import { allVersions } from "../../../lib/docs-content.ts";
+import { docNavItems } from "../../../lib/docs-nav.ts";
+import type { DocVersion } from "../../../lib/versions.ts";
+
+/**
+ * Lists one home per version that `docs/` does not show.
+ *
+ * @returns The paths and their versions.
+ */
+export function getStaticPaths() {
+  return allVersions()
+    .filter((version) => !version.latest)
+    .map((version) => ({
+      params: { version: version.id },
+      props: { version },
+    }));
+}
+
+const { version } = Astro.props as { version: DocVersion };
+const first = docNavItems[0]?.slug ?? "what-is-vibator";
+return Astro.redirect(`/${version.path}${first}/`);
+---

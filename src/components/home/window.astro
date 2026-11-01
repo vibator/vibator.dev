@@ -1,0 +1,51 @@
+---
+/** A framed panel with a title bar, for source code or terminal output. It follows the theme. */
+
+/** Props of the window. */
+interface Props {
+  /** The title bar text, such as a file name or a command. */
+  title: string;
+  /** An extra class for placement. */
+  class?: string;
+}
+
+const { title, class: className } = Astro.props;
+---
+
+<figure class:list={["window", className]}>
+  <figcaption><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="title">{title}</span></figcaption>
+  <div class="body"><slot /></div>
+</figure>
+
+<style>
+  .window {
+    margin: 0;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    overflow: hidden;
+    background: var(--rail);
+    box-shadow: 0 1px 0 var(--line), 0 18px 40px -24px rgb(26 32 39 / 0.35);
+    min-width: 0;
+  }
+  figcaption {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.55rem 0.9rem;
+    border-bottom: 1px solid var(--line);
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--muted);
+  }
+  .title { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .dots { display: inline-flex; flex: none; gap: 0.3rem; }
+  .dots i { width: 0.55rem; height: 0.55rem; border-radius: 50%; background: var(--line); }
+  .body :global(pre) {
+    margin: 0;
+    padding: 0.9rem 1rem 1rem;
+    font-size: 0.8rem;
+    line-height: 1.65;
+    overflow-x: auto;
+    background: transparent !important;
+  }
+</style>
