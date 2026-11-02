@@ -1,0 +1,802 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><script>
+      // Applies the stored theme before the first paint. Storage can be blocked.
+      (() => {
+        let scheme = "system";
+        try {
+          scheme = localStorage.getItem("vibator.color-scheme") || "system";
+        } catch {}
+        const dark =
+          scheme === "dark" ||
+          (scheme !== "light" &&
+            matchMedia("(prefers-color-scheme: dark)").matches);
+        document.documentElement.dataset.scheme = scheme;
+        document.documentElement.dataset.theme = dark ? "dark" : "light";
+      })();
+    </script><title>vibator namespace (next) | vibator</title><meta name="description" content="This document is the reference of the vibator namespace and all its subnamespaces, properties, and functions as they are provided by the base vibator…"><link rel="canonical" href="https://vibator.dev/docs/vibator-namespace/"><meta property="og:type" content="website"><meta property="og:site_name" content="vibator"><meta property="og:title" content="vibator namespace (next) | vibator"><meta property="og:description" content="This document is the reference of the vibator namespace and all its subnamespaces, properties, and functions as they are provided by the base vibator…"><meta property="og:url" content="https://vibator.dev/docs/vibator-namespace/"><meta property="og:image" content="https://vibator.dev/og.png"><meta property="og:image:width" content="1280"><meta property="og:image:height" content="640"><meta property="og:image:alt" content="The vibator logo, the name vibator, and the line: Project rules instead of check scripts."><meta name="twitter:card" content="summary_large_image"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="sitemap" href="/sitemap-index.xml"><link rel="stylesheet" href="/_astro/version-doc.Cy0nZKlS.css"><link rel="stylesheet" href="/_astro/base.DY6RVjvo.css"></head><body><a class="skip-link" href="#main">Skip to content</a><header class="site-header" data-astro-cid-ihije3mh><div class="container bar" data-astro-cid-ihije3mh><a class="brand" href="/" aria-label="vibator home" data-astro-cid-ihije3mh><span class="mark" data-astro-cid-ihije3mh><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" aria-hidden="true" focusable="false">
+  
+  
+  <path fill="none" class="is" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" d="M10 4H5V28H10M22 4H27V28H22"/>
+  <polyline fill="none" class="as" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" points="11,11 16,22 21,11"/>
+</svg>
+</span><span class="word" data-astro-cid-ihije3mh>vibator</span></a><div class="search-slot" data-astro-cid-ihije3mh><link rel="stylesheet" href="/docs/next/pagefind/pagefind-component-ui.css"><script defer src="/docs/next/pagefind/pagefind-component-ui.js"></script><div class="docs-search" data-astro-cid-h4adjmq4><pagefind-config bundle-path="/docs/next/pagefind/" data-astro-cid-h4adjmq4="true"></pagefind-config><pagefind-modal-trigger placeholder="Search the docs" data-astro-cid-h4adjmq4="true"></pagefind-modal-trigger><pagefind-modal data-astro-cid-h4adjmq4="true"></pagefind-modal></div></div><nav class="main-nav" aria-label="Main" data-astro-cid-ihije3mh><ul data-astro-cid-ihije3mh><li data-astro-cid-ihije3mh><a class="nav-link" href="/docs/" aria-current="page" data-astro-cid-ihije3mh>Docs</a></li><li data-astro-cid-ihije3mh><a class="nav-link github" href="https://github.com/vibator/vibator" aria-label="vibator on GitHub" data-astro-cid-ihije3mh><svg viewBox="0 0 16 16" width="20" height="20" aria-hidden="true" data-astro-cid-ihije3mh><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8Z" data-astro-cid-ihije3mh></path></svg></a></li></ul></nav><button type="button" class="icon-button scheme-toggle" data-scheme-toggle aria-label="Theme" data-astro-cid-6kgiinfj><svg class="icon icon-system" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" data-astro-cid-6kgiinfj><circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="1.8" data-astro-cid-6kgiinfj></circle><path d="M12 4a8 8 0 0 1 0 16Z" fill="currentColor" data-astro-cid-6kgiinfj></path></svg><svg class="icon icon-light" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" data-astro-cid-6kgiinfj><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1.8" data-astro-cid-6kgiinfj></circle><path d="M12 2.5v2.2M12 19.3v2.2M4.6 4.6l1.6 1.6M17.8 17.8l1.6 1.6M2.5 12h2.2M19.3 12h2.2M4.6 19.4l1.6-1.6M17.8 6.2l1.6-1.6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" data-astro-cid-6kgiinfj></path></svg><svg class="icon icon-dark" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" data-astro-cid-6kgiinfj><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" data-astro-cid-6kgiinfj></path></svg></button><script type="module">var e=`vibator.color-scheme`,t=`(prefers-color-scheme: dark)`,n=[`system`,`light`,`dark`];function r(){try{let t=localStorage.getItem(e);return t===`light`||t===`dark`?t:`system`}catch{return`system`}}function i(t){try{localStorage.setItem(e,t)}catch{}}function a(e){let n=e===`dark`||e===`system`&&matchMedia(t).matches,r=document.documentElement;r.dataset.scheme=e,r.dataset.theme=n?`dark`:`light`}function o(e){return e===`system`?`Theme: system. Switch to light`:e===`light`?`Theme: light. Switch to dark`:`Theme: dark. Switch to system`}function s(e){let s=[...e],c=r(),l=()=>{for(let e of s)e.setAttribute(`aria-label`,o(c)),e.title=o(c)};for(let e of s)e.addEventListener(`click`,()=>{c=n[(n.indexOf(c)+1)%n.length]??`system`,i(c),a(c),l()});matchMedia(t).addEventListener(`change`,()=>{c===`system`&&a(`system`)}),l()}s(document.querySelectorAll(`[data-scheme-toggle]`));</script><div class="menu-slot" data-astro-cid-ihije3mh><button type="button" class="icon-button menu-toggle" aria-label="Menu" aria-haspopup="dialog" aria-controls="docs-menu" data-menu-open data-astro-cid-6yjemxzi><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true" data-astro-cid-6yjemxzi><path d="M4 7h16 M4 12h16 M4 17h16" data-astro-cid-6yjemxzi></path></svg></button><dialog class="docs-drawer" id="docs-menu" aria-label="Menu" data-astro-cid-6yjemxzi><div class="drawer-body" data-astro-cid-6yjemxzi><div class="drawer-head" data-astro-cid-6yjemxzi><span class="drawer-title" data-astro-cid-6yjemxzi>Menu</span><button type="button" class="drawer-close" aria-label="Close the menu" data-menu-close data-astro-cid-6yjemxzi><svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true" data-astro-cid-6yjemxzi><path d="M3.5 3.5l9 9M12.5 3.5l-9 9" data-astro-cid-6yjemxzi></path></svg></button></div><nav aria-label="Site" data-astro-cid-6yjemxzi><ul class="site-links" data-astro-cid-6yjemxzi><li data-astro-cid-6yjemxzi><a href="/" data-astro-cid-6yjemxzi>Home</a></li><li data-astro-cid-6yjemxzi><a href="/docs/" data-astro-cid-6yjemxzi>Docs</a></li><li data-astro-cid-6yjemxzi><a href="https://github.com/vibator/vibator" data-astro-cid-6yjemxzi>GitHub</a></li></ul></nav><nav aria-label="Docs" data-astro-cid-6yjemxzi><div class="version" data-astro-cid-6yjemxzi><details class="versions" data-versions data-astro-cid-rzg3orrh><summary data-astro-cid-rzg3orrh><span class="visually-hidden" data-astro-cid-rzg3orrh>Docs version:</span><span class="choice" data-astro-cid-rzg3orrh><span class="name" data-astro-cid-rzg3orrh>next</span><span class="note" data-astro-cid-rzg3orrh>Unreleased, on main</span></span><svg class="chevron" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" data-astro-cid-rzg3orrh><path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" data-astro-cid-rzg3orrh></path></svg></summary><ul class="menu" data-astro-cid-rzg3orrh><li data-astro-cid-rzg3orrh><a href="/docs/next/vibator-namespace/" aria-current="page" data-astro-cid-rzg3orrh><span class="choice" data-astro-cid-rzg3orrh><span class="name" data-astro-cid-rzg3orrh>next</span><span class="note" data-astro-cid-rzg3orrh>Unreleased, on main</span></span><svg class="check" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" data-astro-cid-rzg3orrh><path d="M3.5 8.5l3 3 6-7" fill="none" stroke="currentColor" stroke-width="1.8" data-astro-cid-rzg3orrh></path></svg></a></li><li data-astro-cid-rzg3orrh><a href="/docs/vibator-namespace/" data-astro-cid-rzg3orrh><span class="choice" data-astro-cid-rzg3orrh><span class="name" data-astro-cid-rzg3orrh>v3.0</span><span class="note" data-astro-cid-rzg3orrh>Latest release</span></span></a></li></ul></details><script type="module">function e(){let e=[...document.querySelectorAll(`details[data-versions]`)];e.length!==0&&(document.addEventListener(`click`,t=>{for(let n of e)n.open&&!n.contains(t.target)&&(n.open=!1)}),document.addEventListener(`keydown`,t=>{if(t.key===`Escape`)for(let t of e.filter(e=>e.open))t.open=!1,t.querySelector(`summary`)?.focus()}))}e();</script></div><div class="group" data-astro-cid-g7fjljse><p class="group-label" data-astro-cid-g7fjljse>Guide</p><ul data-astro-cid-g7fjljse><li data-astro-cid-g7fjljse><a href="/docs/next/what-is-vibator/" data-astro-cid-g7fjljse>What is vibator?</a></li><li data-astro-cid-g7fjljse><a href="/docs/next/getting-started/" data-astro-cid-g7fjljse>Getting started</a></li><li data-astro-cid-g7fjljse><a href="/docs/next/from-script-to-rule/" data-astro-cid-g7fjljse>From script to rule</a></li><li data-astro-cid-g7fjljse><a href="/docs/next/plugins/" data-astro-cid-g7fjljse>Plugins and shared configuration</a></li><li data-astro-cid-g7fjljse><a href="/docs/next/agent-skills/" data-astro-cid-g7fjljse>Agent skills</a></li></ul></div><div class="group" data-astro-cid-g7fjljse><p class="group-label" data-astro-cid-g7fjljse>Reference</p><ul data-astro-cid-g7fjljse><li data-astro-cid-g7fjljse><a href="/docs/next/vibator-namespace/" aria-current="page" data-astro-cid-g7fjljse>Namespace</a></li><li data-astro-cid-g7fjljse><a href="/docs/next/rule-definition/" data-astro-cid-g7fjljse>Rule definition</a></li><li data-astro-cid-g7fjljse><a href="/docs/next/configuration/" data-astro-cid-g7fjljse>Configuration</a></li><li data-astro-cid-g7fjljse><a href="/docs/next/command-line/" data-astro-cid-g7fjljse>Command line</a></li></ul></div></nav></div></dialog><script type="module">var e=document.querySelector(`#docs-menu`);document.querySelector(`[data-menu-open]`)?.addEventListener(`click`,()=>e?.showModal()),document.querySelector(`[data-menu-close]`)?.addEventListener(`click`,()=>e?.close()),e?.addEventListener(`click`,t=>{t.target===e&&e.close()});</script></div></div></header><main id="main"><div class="container docs-shell" data-astro-cid-7fqtfzcv><nav class="docs-sidebar" aria-label="Docs" data-astro-cid-7hp4i5t7><div class="version" data-astro-cid-7hp4i5t7><details class="versions" data-versions data-astro-cid-rzg3orrh><summary data-astro-cid-rzg3orrh><span class="visually-hidden" data-astro-cid-rzg3orrh>Docs version:</span><span class="choice" data-astro-cid-rzg3orrh><span class="name" data-astro-cid-rzg3orrh>next</span><span class="note" data-astro-cid-rzg3orrh>Unreleased, on main</span></span><svg class="chevron" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" data-astro-cid-rzg3orrh><path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" data-astro-cid-rzg3orrh></path></svg></summary><ul class="menu" data-astro-cid-rzg3orrh><li data-astro-cid-rzg3orrh><a href="/docs/next/vibator-namespace/" aria-current="page" data-astro-cid-rzg3orrh><span class="choice" data-astro-cid-rzg3orrh><span class="name" data-astro-cid-rzg3orrh>next</span><span class="note" data-astro-cid-rzg3orrh>Unreleased, on main</span></span><svg class="check" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" data-astro-cid-rzg3orrh><path d="M3.5 8.5l3 3 6-7" fill="none" stroke="currentColor" stroke-width="1.8" data-astro-cid-rzg3orrh></path></svg></a></li><li data-astro-cid-rzg3orrh><a href="/docs/vibator-namespace/" data-astro-cid-rzg3orrh><span class="choice" data-astro-cid-rzg3orrh><span class="name" data-astro-cid-rzg3orrh>v3.0</span><span class="note" data-astro-cid-rzg3orrh>Latest release</span></span></a></li></ul></details></div><div class="list" data-astro-cid-7hp4i5t7><div class="group" data-astro-cid-g7fjljse><p class="group-label" data-astro-cid-g7fjljse>Guide</p><ul data-astro-cid-g7fjljse><li data-astro-cid-g7fjljse><a href="/docs/next/what-is-vibator/" data-astro-cid-g7fjljse>What is vibator?</a></li><li data-astro-cid-g7fjljse><a href="/docs/next/getting-started/" data-astro-cid-g7fjljse>Getting started</a></li><li data-astro-cid-g7fjljse><a href="/docs/next/from-script-to-rule/" data-astro-cid-g7fjljse>From script to rule</a></li><li data-astro-cid-g7fjljse><a href="/docs/next/plugins/" data-astro-cid-g7fjljse>Plugins and shared configuration</a></li><li data-astro-cid-g7fjljse><a href="/docs/next/agent-skills/" data-astro-cid-g7fjljse>Agent skills</a></li></ul></div><div class="group" data-astro-cid-g7fjljse><p class="group-label" data-astro-cid-g7fjljse>Reference</p><ul data-astro-cid-g7fjljse><li data-astro-cid-g7fjljse><a href="/docs/next/vibator-namespace/" aria-current="page" data-astro-cid-g7fjljse>Namespace</a></li><li data-astro-cid-g7fjljse><a href="/docs/next/rule-definition/" data-astro-cid-g7fjljse>Rule definition</a></li><li data-astro-cid-g7fjljse><a href="/docs/next/configuration/" data-astro-cid-g7fjljse>Configuration</a></li><li data-astro-cid-g7fjljse><a href="/docs/next/command-line/" data-astro-cid-g7fjljse>Command line</a></li></ul></div></div></nav><div class="docs-main" data-astro-cid-7fqtfzcv><article class="doc" data-pagefind-body data-astro-cid-7fqtfzcv><p class="version-banner" role="note" data-pagefind-ignore data-astro-cid-7fqtfzcv>These docs follow main and describe changes no release has yet. <a href="/docs/vibator-namespace/" data-astro-cid-7fqtfzcv>Read this page in the latest release.</a></p><h1 data-astro-cid-7fqtfzcv><code>vibator</code> namespace</h1><div class="prose" data-astro-cid-7fqtfzcv><p>This document is the reference of the <code>vibator</code> namespace and all its
+subnamespaces, properties, and functions as they are provided by the base
+vibator framework.</p>
+<h2 id="namespaces">Namespaces</h2>
+<ul>
+<li><a href="#project">project</a>: Navigate the files and folders in this project.</li>
+<li><a href="#ts">ts</a>: Parse and manipulate TypeScript files.</li>
+<li><a href="#json">json</a>: Parse JSON files.</li>
+<li><a href="#text">text</a>: Parse and manipulate files as plain text.</li>
+<li><a href="#ignore">ignore</a>: Check ignore markers for a rule at line, node, or file level.</li>
+<li><a href="#git">git</a>: Gateway to git functionality.</li>
+<li><a href="#shell">shell</a>: Gateway to the shell.</li>
+<li><a href="#package">package</a>: Parse and manage <code>package.json</code> files.</li>
+<li><a href="#module">module</a>: Resolve module specifiers to files.</li>
+<li><a href="#glob">glob</a>: Match paths against globs.</li>
+</ul>
+<p>A plugin adds its own namespaces. See <a href="#extending-the-namespace">Extending the namespace</a>.</p>
+<hr>
+<h2 id="project">project</h2>
+<p>Navigate the files and folders in this project, and write to them.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Declaration</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>root: string</td>
+<td>The absolute path of the project root.</td>
+</tr>
+<tr>
+<td>files: <a href="#fileset">FileSet</a></td>
+<td>Every file in scope for the current run.</td>
+</tr>
+<tr>
+<td>folders: <a href="#folderset">FolderSet</a></td>
+<td>Every top-level folder in the project.</td>
+</tr>
+<tr>
+<td>exists(path: string): boolean</td>
+<td>Reports whether a path exists on disk, whether or not discovery lists it.</td>
+</tr>
+<tr>
+<td>write(path: string, content: string): void</td>
+<td>Writes content to an absolute path, creating the file when the path is new and overwriting it when the path exists.</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="ts">ts</h2>
+<p>Parse and manipulate TypeScript files.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Declaration</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>parse(file: <a href="#file">File</a>): <a href="#ast">Ast</a></td>
+<td>Parses a TypeScript or JavaScript file into a syntax tree.</td>
+</tr>
+<tr>
+<td>program(tsconfig: <a href="#file">File</a>): <a href="#program">Program</a></td>
+<td>Builds a type-checked program from a <code>tsconfig</code> file.</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="json">json</h2>
+<p>Parse JSON files.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Declaration</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>parse(file: <a href="#file">File</a>): unknown</td>
+<td>Parses a JSON file into its value.</td>
+</tr>
+<tr>
+<td>keys(value: unknown): string[]</td>
+<td>Flattens a value into its dotted key paths.</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="text">text</h2>
+<p>Parse and manipulate files as plain text.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Declaration</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>lines(file: <a href="#file">File</a>): <a href="#line">Line</a>[]</td>
+<td>Splits a file into numbered lines.</td>
+</tr>
+<tr>
+<td>maskComments(file: <a href="#file">File</a>): string</td>
+<td>Returns the file content with JavaScript and TypeScript comments blanked, keeping line positions.</td>
+</tr>
+<tr>
+<td>maskCode(file: <a href="#file">File</a>): string</td>
+<td>Returns the file content with Markdown code fences and spans blanked, keeping line positions.</td>
+</tr>
+<tr>
+<td>positionAt(file: <a href="#file">File</a>, offset: number): <a href="#position">Position</a></td>
+<td>Resolves a character offset to a line and column.</td>
+</tr>
+<tr>
+<td>matches(file: <a href="#file">File</a>, pattern: RegExp): <a href="#match">Match</a>[]</td>
+<td>Returns every match of a pattern with its position.</td>
+</tr>
+<tr>
+<td>search(files: <a href="#fileset">FileSet</a>, pattern: RegExp): <a href="#hit">Hit</a>[]</td>
+<td>Returns every match of a pattern across a set of files, each with the path of its file.</td>
+</tr>
+<tr>
+<td>binary(file: <a href="#file">File</a>): boolean</td>
+<td>Reports whether the file content is binary.</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="ignore">ignore</h2>
+<p>Check whether an ignore marker silences a rule. A marker reads
+<code>vibator-ignore &lt;rule-id&gt;: &lt;reason&gt;</code> on the line above the finding, or
+<code>vibator-ignore-file &lt;rule-id&gt;: &lt;reason&gt;</code> anywhere in the file. The reason is
+optional.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Declaration</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>line(file: <a href="#file">File</a>, line: number, rule: string): boolean</td>
+<td>Reports whether a marker on the line above names the rule.</td>
+</tr>
+<tr>
+<td>node(node: <a href="#external-types">Node</a>, rule: string): boolean</td>
+<td>Reports whether a marker above the node or an enclosing class, function, method, interface, enum, or module names the rule.</td>
+</tr>
+<tr>
+<td>file(file: <a href="#file">File</a>, rule: string): boolean</td>
+<td>Reports whether a file-level marker names the rule.</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="git">git</h2>
+<p>Gateway to git functionality.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Declaration</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>isRepo(): boolean</td>
+<td>Reports whether the project root sits inside a git repository.</td>
+</tr>
+<tr>
+<td>files(): string[]</td>
+<td>The tracked and untracked-tracked-eligible paths git keeps.</td>
+</tr>
+<tr>
+<td>untrackedFiles(): string[]</td>
+<td>The untracked paths git keeps.</td>
+</tr>
+<tr>
+<td>changedFiles(): string[]</td>
+<td>The paths this working tree changed against <code>HEAD</code>, present on disk.</td>
+</tr>
+<tr>
+<td>stagedFiles(): string[]</td>
+<td>The paths staged for the next commit, present on disk.</td>
+</tr>
+<tr>
+<td>changedSince(base: string): string[]</td>
+<td>The paths this branch changed since it diverged from <code>base</code>.</td>
+</tr>
+<tr>
+<td>status(paths: string[]): <a href="#statusentry">StatusEntry</a>[]</td>
+<td>The working-tree status of the given paths.</td>
+</tr>
+<tr>
+<td>restore(paths: string[]): void</td>
+<td>Restores the given tracked paths from the index.</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="shell">shell</h2>
+<p>Gateway to the shell.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Declaration</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>run(command: string, options?: <a href="#shelloptions">ShellOptions</a>): <a href="#shellresult">ShellResult</a></td>
+<td>Runs a command and returns its outcome. Runs from the root with no timeout by default.</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="package">package</h2>
+<p>Parse and manage <code>package.json</code> files.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Declaration</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>root: <a href="#packagemanifest">PackageManifest</a></td>
+<td>The parsed root <code>package.json</code>.</td>
+</tr>
+<tr>
+<td>parse(file: <a href="#file">File</a>): <a href="#packagemanifest">PackageManifest</a></td>
+<td>Parses a <code>package.json</code> file into a manifest.</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="module">module</h2>
+<p>Resolve module references and specifiers to files.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Declaration</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>resolve(specifier: string, from?: string): string</td>
+<td>Resolves a reference to an absolute file path, from <code>from</code>.</td>
+</tr>
+</tbody>
+</table></div>
+<p>The three reference forms, in resolution order:</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Form</th>
+<th>Example</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Absolute path</td>
+<td><code>/abs/rules.ts</code></td>
+<td>The path as it is.</td>
+</tr>
+<tr>
+<td>Starts with <code>.</code></td>
+<td><code>./rules.ts</code>, <code>.vibator/docs/rule.md</code></td>
+<td>A local file, joined onto the directory of <code>from</code>.</td>
+</tr>
+<tr>
+<td>Anything else</td>
+<td><code>zod</code>, <code>@acme/rules</code></td>
+<td>A package specifier resolved by Node, honoring the <code>exports</code> map.</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="glob">glob</h2>
+<p>Match paths against globs; prefix a glob with <code>!</code> to exclude.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Declaration</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>matches(path: string, globs: string | string[]): boolean</td>
+<td>Whether the path matches the globs and none of the exclusions.</td>
+</tr>
+</tbody>
+</table></div>
+<hr>
+<h2 id="extending-the-namespace">Extending the namespace</h2>
+<p>A plugin adds a namespace when its module is imported. Rules then read it as
+<code>vibator.&lt;name&gt;</code>.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Declaration</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>defineNamespace(name: string, value: Value): Value</td>
+<td>Adds a namespace to <code>vibator</code> and returns it. A name <code>vibator</code> already has is an error.</td>
+</tr>
+<tr>
+<td>interface Vibator</td>
+<td>The type of <code>vibator</code>. A plugin adds its namespace to it with <code>declare module "vibator"</code>.</td>
+</tr>
+</tbody>
+</table></div>
+<pre class="astro-code css-variables" style="background-color:var(--astro-code-background);color:var(--astro-code-foreground); overflow-x: auto;" tabindex="0" data-language="ts"><code><span class="line"><span style="color:var(--astro-code-token-keyword)">import</span><span style="color:var(--astro-code-foreground)"> { defineNamespace } </span><span style="color:var(--astro-code-token-keyword)">from</span><span style="color:var(--astro-code-token-string-expression)"> "vibator"</span><span style="color:var(--astro-code-foreground)">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:var(--astro-code-token-keyword)">export</span><span style="color:var(--astro-code-token-keyword)"> const</span><span style="color:var(--astro-code-token-constant)"> audit</span><span style="color:var(--astro-code-token-keyword)"> =</span><span style="color:var(--astro-code-token-function)"> defineNamespace</span><span style="color:var(--astro-code-foreground)">(</span><span style="color:var(--astro-code-token-string-expression)">"audit"</span><span style="color:var(--astro-code-token-punctuation)">,</span><span style="color:var(--astro-code-foreground)"> { </span><span style="color:var(--astro-code-token-function)">count</span><span style="color:var(--astro-code-token-keyword)">:</span><span style="color:var(--astro-code-foreground)"> () </span><span style="color:var(--astro-code-token-keyword)">=&gt;</span><span style="color:var(--astro-code-token-constant)"> 3</span><span style="color:var(--astro-code-foreground)"> });</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:var(--astro-code-token-keyword)">declare</span><span style="color:var(--astro-code-token-keyword)"> module</span><span style="color:var(--astro-code-token-string-expression)"> "vibator"</span><span style="color:var(--astro-code-foreground)"> {</span></span>
+<span class="line"><span style="color:var(--astro-code-token-keyword)">  interface</span><span style="color:var(--astro-code-token-function)"> Vibator</span><span style="color:var(--astro-code-foreground)"> {</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    audit</span><span style="color:var(--astro-code-token-keyword)">:</span><span style="color:var(--astro-code-token-keyword)"> typeof</span><span style="color:var(--astro-code-foreground)"> audit;</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">  }</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">}</span></span></code></pre>
+<p>A rule's file sees the declared type once it imports the plugin's types, such
+as <code>import type {} from "@acme/audit";</code>.</p>
+<h2 id="types">Types</h2>
+<p>The objects returned and accepted across the namespaces above.</p>
+<h3 id="fileset">FileSet</h3>
+<p>An ordered collection of files, with glob filtering and lookup by path. It is
+iterable, so a rule can loop over it with <code>for...of</code>.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Declaration</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>match(glob: string | string[]): <a href="#fileset">FileSet</a></td>
+<td>Filters the set to files matching the glob or globs.</td>
+</tr>
+<tr>
+<td>get(path: string): <a href="#file">File</a></td>
+<td>The file at an absolute path.</td>
+</tr>
+<tr>
+<td>length: number</td>
+<td>The count of files in the set.</td>
+</tr>
+<tr>
+<td>forEach(visit: (file: <a href="#file">File</a>, index: number) =&gt; void): void</td>
+<td>Runs a function over each file in order.</td>
+</tr>
+<tr>
+<td>map(transform: (file: <a href="#file">File</a>, index: number) =&gt; T): T[]</td>
+<td>Maps each file to a value.</td>
+</tr>
+<tr>
+<td>flatMap(transform: (file: <a href="#file">File</a>, index: number) =&gt; T[]): T[]</td>
+<td>Maps each file to a list of values and flattens the lists.</td>
+</tr>
+<tr>
+<td>filter(keep: (file: <a href="#file">File</a>) =&gt; boolean): <a href="#fileset">FileSet</a></td>
+<td>Returns the files that satisfy a predicate.</td>
+</tr>
+<tr>
+<td>find(match: (file: <a href="#file">File</a>) =&gt; boolean): <a href="#file">File</a> | undefined</td>
+<td>Returns the first file that satisfies a predicate.</td>
+</tr>
+<tr>
+<td>paths(): string[]</td>
+<td>The absolute paths in the set, sorted.</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="file">File</h3>
+<p>One file in the project.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Declaration</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>path: string</td>
+<td>The absolute path, forward-slashed.</td>
+</tr>
+<tr>
+<td>name: string</td>
+<td>The file base name.</td>
+</tr>
+<tr>
+<td>ext: string</td>
+<td>The file extension, including the dot.</td>
+</tr>
+<tr>
+<td>content: string</td>
+<td>The file content decoded as UTF-8 text.</td>
+</tr>
+<tr>
+<td>bytes: Buffer</td>
+<td>The raw file content as bytes.</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="folderset">FolderSet</h3>
+<p>An ordered collection of folders, with glob filtering and lookup by path.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Declaration</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>match(glob: string | string[]): <a href="#folderset">FolderSet</a></td>
+<td>Filters the set to folders matching the glob or globs.</td>
+</tr>
+<tr>
+<td>get(path: string): <a href="#folder">Folder</a> | undefined</td>
+<td>The folder at an absolute path.</td>
+</tr>
+<tr>
+<td>length: number</td>
+<td>The count of folders in the set.</td>
+</tr>
+<tr>
+<td>forEach(visit: (folder: <a href="#folder">Folder</a>, index: number) =&gt; void): void</td>
+<td>Runs a function over each folder in order.</td>
+</tr>
+<tr>
+<td>map(transform: (folder: <a href="#folder">Folder</a>, index: number) =&gt; T): T[]</td>
+<td>Maps each folder to a value.</td>
+</tr>
+<tr>
+<td>filter(keep: (folder: <a href="#folder">Folder</a>) =&gt; boolean): <a href="#folderset">FolderSet</a></td>
+<td>Returns the folders that satisfy a predicate.</td>
+</tr>
+<tr>
+<td>find(match: (folder: <a href="#folder">Folder</a>) =&gt; boolean): <a href="#folder">Folder</a> | undefined</td>
+<td>Returns the first folder that satisfies a predicate.</td>
+</tr>
+<tr>
+<td>paths(): string[]</td>
+<td>The absolute paths in the set, sorted.</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="folder">Folder</h3>
+<p>One folder in the project.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Declaration</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>path: string</td>
+<td>The absolute path, forward-slashed.</td>
+</tr>
+<tr>
+<td>name: string</td>
+<td>The folder base name.</td>
+</tr>
+<tr>
+<td>files: <a href="#fileset">FileSet</a></td>
+<td>The files directly inside this folder.</td>
+</tr>
+<tr>
+<td>folders: <a href="#folderset">FolderSet</a></td>
+<td>The folders directly inside this folder.</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="ast">Ast</h3>
+<p>The syntax tree of a parsed file.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Declaration</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>source: <a href="#external-types">SourceFile</a></td>
+<td>The TypeScript source file.</td>
+</tr>
+<tr>
+<td>nodes: <a href="#nodecursor">NodeCursor</a>[]</td>
+<td>Every node, flattened in source order.</td>
+</tr>
+<tr>
+<td>lineAt(offset: number): number</td>
+<td>The 1-based line a character offset falls on.</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="nodecursor">NodeCursor</h3>
+<p>One node in a syntax tree with its position.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Declaration</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>node: <a href="#external-types">Node</a></td>
+<td>The TypeScript node.</td>
+</tr>
+<tr>
+<td>line: number</td>
+<td>The 1-based line the node starts on.</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="program">Program</h3>
+<p>A type-checked TypeScript program.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Declaration</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>checker: <a href="#external-types">TypeChecker</a></td>
+<td>The program type checker.</td>
+</tr>
+<tr>
+<td>files: <a href="#fileset">FileSet</a></td>
+<td>The files included in the program.</td>
+</tr>
+<tr>
+<td>ast(file: <a href="#file">File</a>): <a href="#ast">Ast</a></td>
+<td>The syntax tree of a file in the program.</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="line">Line</h3>
+<p>One line of text with its number.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Declaration</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>number: number</td>
+<td>The 1-based line number.</td>
+</tr>
+<tr>
+<td>text: string</td>
+<td>The line content.</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="position">Position</h3>
+<p>A line and column in a file.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Declaration</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>line: number</td>
+<td>The 1-based line.</td>
+</tr>
+<tr>
+<td>column: number</td>
+<td>The 1-based column.</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="match">Match</h3>
+<p>One match of a pattern with its position.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Declaration</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>text: string</td>
+<td>The matched text.</td>
+</tr>
+<tr>
+<td>index: number</td>
+<td>The character offset of the match.</td>
+</tr>
+<tr>
+<td>line: number</td>
+<td>The 1-based line the match starts on.</td>
+</tr>
+<tr>
+<td>column: number</td>
+<td>The 1-based column the match starts on.</td>
+</tr>
+<tr>
+<td>groups: string[]</td>
+<td>The captured groups.</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="hit">Hit</h3>
+<p>One match of a pattern in a file of a set. It has every field of
+<a href="#match">Match</a> and the path of its file.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Declaration</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>file: string</td>
+<td>The absolute path of the file the match is in.</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="statusentry">StatusEntry</h3>
+<p>The git status of one path.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Declaration</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>path: string</td>
+<td>The repo-relative path.</td>
+</tr>
+<tr>
+<td>staged: boolean</td>
+<td>True when the path holds staged changes.</td>
+</tr>
+<tr>
+<td>unstaged: boolean</td>
+<td>True when the path holds unstaged changes.</td>
+</tr>
+<tr>
+<td>untracked: boolean</td>
+<td>True when git tracks the path for the first time.</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="shelloptions">ShellOptions</h3>
+<p>The options for a shell command.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Declaration</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>cwd: string</td>
+<td>The working directory, relative to the project root.</td>
+</tr>
+<tr>
+<td>timeoutMs: number</td>
+<td>The time a command runs before it is stopped, in milliseconds.</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="shellresult">ShellResult</h3>
+<p>The outcome of a shell command.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Declaration</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ok: boolean</td>
+<td>True when the command exits with code 0.</td>
+</tr>
+<tr>
+<td>stdout: string</td>
+<td>The captured standard output.</td>
+</tr>
+<tr>
+<td>stderr: string</td>
+<td>The captured standard error.</td>
+</tr>
+<tr>
+<td>code: number</td>
+<td>The exit code.</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="packagemanifest">PackageManifest</h3>
+<p>A parsed <code>package.json</code>.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Declaration</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>name: string</td>
+<td>The package name.</td>
+</tr>
+<tr>
+<td>version: string</td>
+<td>The package version.</td>
+</tr>
+<tr>
+<td>scripts: Record&lt;string, string&gt;</td>
+<td>The scripts, keyed by name.</td>
+</tr>
+<tr>
+<td>dependencies: Record&lt;string, string&gt;</td>
+<td>The runtime dependencies, keyed by name.</td>
+</tr>
+<tr>
+<td>devDependencies: Record&lt;string, string&gt;</td>
+<td>The development dependencies, keyed by name.</td>
+</tr>
+<tr>
+<td>peerDependencies: Record&lt;string, string&gt;</td>
+<td>The peer dependencies, keyed by name.</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="external-types">External types</h3>
+<p>Types provided by other packages.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Buffer</td>
+<td><a href="https://nodejs.org/api/buffer.html">Node.js</a></td>
+</tr>
+<tr>
+<td>SourceFile</td>
+<td><a href="https://github.com/microsoft/TypeScript/wiki/Using-the-Compiler-API">TypeScript</a></td>
+</tr>
+<tr>
+<td>Node</td>
+<td><a href="https://github.com/microsoft/TypeScript/wiki/Using-the-Compiler-API">TypeScript</a></td>
+</tr>
+<tr>
+<td>TypeChecker</td>
+<td><a href="https://github.com/microsoft/TypeScript/wiki/Using-the-Compiler-API">TypeScript</a></td>
+</tr>
+</tbody>
+</table></div>
+</div></article></div><nav class="toc" aria-labelledby="toc-title" data-astro-cid-7fqtfzcv><h2 id="toc-title" data-astro-cid-7fqtfzcv>On this page</h2><ul data-astro-cid-7fqtfzcv><li class="depth-2" data-astro-cid-7fqtfzcv><a href="#namespaces" data-astro-cid-7fqtfzcv>Namespaces</a></li><li class="depth-2" data-astro-cid-7fqtfzcv><a href="#project" data-astro-cid-7fqtfzcv>project</a></li><li class="depth-2" data-astro-cid-7fqtfzcv><a href="#ts" data-astro-cid-7fqtfzcv>ts</a></li><li class="depth-2" data-astro-cid-7fqtfzcv><a href="#json" data-astro-cid-7fqtfzcv>json</a></li><li class="depth-2" data-astro-cid-7fqtfzcv><a href="#text" data-astro-cid-7fqtfzcv>text</a></li><li class="depth-2" data-astro-cid-7fqtfzcv><a href="#ignore" data-astro-cid-7fqtfzcv>ignore</a></li><li class="depth-2" data-astro-cid-7fqtfzcv><a href="#git" data-astro-cid-7fqtfzcv>git</a></li><li class="depth-2" data-astro-cid-7fqtfzcv><a href="#shell" data-astro-cid-7fqtfzcv>shell</a></li><li class="depth-2" data-astro-cid-7fqtfzcv><a href="#package" data-astro-cid-7fqtfzcv>package</a></li><li class="depth-2" data-astro-cid-7fqtfzcv><a href="#module" data-astro-cid-7fqtfzcv>module</a></li><li class="depth-2" data-astro-cid-7fqtfzcv><a href="#glob" data-astro-cid-7fqtfzcv>glob</a></li><li class="depth-2" data-astro-cid-7fqtfzcv><a href="#extending-the-namespace" data-astro-cid-7fqtfzcv>Extending the namespace</a></li><li class="depth-2" data-astro-cid-7fqtfzcv><a href="#types" data-astro-cid-7fqtfzcv>Types</a></li><li class="depth-3" data-astro-cid-7fqtfzcv><a href="#fileset" data-astro-cid-7fqtfzcv>FileSet</a></li><li class="depth-3" data-astro-cid-7fqtfzcv><a href="#file" data-astro-cid-7fqtfzcv>File</a></li><li class="depth-3" data-astro-cid-7fqtfzcv><a href="#folderset" data-astro-cid-7fqtfzcv>FolderSet</a></li><li class="depth-3" data-astro-cid-7fqtfzcv><a href="#folder" data-astro-cid-7fqtfzcv>Folder</a></li><li class="depth-3" data-astro-cid-7fqtfzcv><a href="#ast" data-astro-cid-7fqtfzcv>Ast</a></li><li class="depth-3" data-astro-cid-7fqtfzcv><a href="#nodecursor" data-astro-cid-7fqtfzcv>NodeCursor</a></li><li class="depth-3" data-astro-cid-7fqtfzcv><a href="#program" data-astro-cid-7fqtfzcv>Program</a></li><li class="depth-3" data-astro-cid-7fqtfzcv><a href="#line" data-astro-cid-7fqtfzcv>Line</a></li><li class="depth-3" data-astro-cid-7fqtfzcv><a href="#position" data-astro-cid-7fqtfzcv>Position</a></li><li class="depth-3" data-astro-cid-7fqtfzcv><a href="#match" data-astro-cid-7fqtfzcv>Match</a></li><li class="depth-3" data-astro-cid-7fqtfzcv><a href="#hit" data-astro-cid-7fqtfzcv>Hit</a></li><li class="depth-3" data-astro-cid-7fqtfzcv><a href="#statusentry" data-astro-cid-7fqtfzcv>StatusEntry</a></li><li class="depth-3" data-astro-cid-7fqtfzcv><a href="#shelloptions" data-astro-cid-7fqtfzcv>ShellOptions</a></li><li class="depth-3" data-astro-cid-7fqtfzcv><a href="#shellresult" data-astro-cid-7fqtfzcv>ShellResult</a></li><li class="depth-3" data-astro-cid-7fqtfzcv><a href="#packagemanifest" data-astro-cid-7fqtfzcv>PackageManifest</a></li><li class="depth-3" data-astro-cid-7fqtfzcv><a href="#external-types" data-astro-cid-7fqtfzcv>External types</a></li></ul></nav></div></main><footer class="site-footer" data-astro-cid-7lhuyvjk><div class="container row" data-astro-cid-7lhuyvjk><p data-astro-cid-7lhuyvjk>vibator is <a href="https://github.com/vibator/vibator/blob/main/LICENSE" data-astro-cid-7lhuyvjk>MIT licensed</a>.</p><nav aria-label="Footer" data-astro-cid-7lhuyvjk><ul data-astro-cid-7lhuyvjk><li data-astro-cid-7lhuyvjk><a href="/docs/" data-astro-cid-7lhuyvjk>Docs</a></li><li data-astro-cid-7lhuyvjk><a href="https://github.com/vibator/vibator" data-astro-cid-7lhuyvjk>GitHub</a></li><li data-astro-cid-7lhuyvjk><a href="https://github.com/vibator/vibator/releases" data-astro-cid-7lhuyvjk>Releases</a></li><li data-astro-cid-7lhuyvjk><a href="https://www.npmjs.com/package/vibator" data-astro-cid-7lhuyvjk>npm</a></li><li data-astro-cid-7lhuyvjk><a href="https://github.com/vibator/vibator.dev/blob/main/ACCESSIBILITY.md" data-astro-cid-7lhuyvjk>Accessibility</a></li></ul></nav></div></footer></body></html><script type="module">async function e(e,t){try{await navigator.clipboard.writeText(t),e.textContent=`Copied`}catch{e.textContent=`Select and copy`}setTimeout(()=>{e.textContent=`Copy`},1600)}function t(t){for(let n of t){let t=document.createElement(`div`);t.className=`code-block`,n.replaceWith(t),t.append(n);let r=document.createElement(`button`);r.type=`button`,r.className=`copy-button`,r.textContent=`Copy`,r.setAttribute(`aria-label`,`Copy the code`),r.addEventListener(`click`,()=>{let t=n.querySelector(`code`)?.textContent??n.textContent;e(r,t)}),t.append(r)}}t(document.querySelectorAll(`.prose pre`));for(let e of document.querySelectorAll(`.prose .table-wrap`))e.tabIndex=0;</script>

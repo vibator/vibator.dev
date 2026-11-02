@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" role="img">
+  <title>vibator: a v inside square brackets</title>
+  <style>.is{stroke:#17191e}.as{stroke:#ea580c}@media (prefers-color-scheme:dark){.is{stroke:#eceef1}.as{stroke:#fb923c}}</style>
+  <path fill="none" class="is" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" d="M10 4H5V28H10M22 4H27V28H22"/>
+  <polyline fill="none" class="as" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" points="11,11 16,22 21,11"/>
+</svg>
