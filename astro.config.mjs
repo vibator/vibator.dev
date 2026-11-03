@@ -2,7 +2,7 @@
 import { fileURLToPath } from "node:url";
 import { satteri } from "@astrojs/markdown-satteri";
 import sitemap from "@astrojs/sitemap";
-import { defineConfig } from "astro/config";
+import { defineConfig, fontProviders } from "astro/config";
 import {
   docMarkdownPlugin,
   tableWrapPlugin,
@@ -28,6 +28,45 @@ export default defineConfig({
   trailingSlash: "always",
   build: { format: "directory" },
   devToolbar: { enabled: false },
+  // Astro serves the fonts from the installed packages, preloads them, and sizes the fallback
+  // fonts to match. `optional` keeps the fallback for the page view when a font arrives late, so
+  // the text never moves. The site is in English, so only the Latin files ship.
+  fonts: [
+    {
+      provider: fontProviders.local(),
+      name: "Overpass",
+      cssVariable: "--font-overpass",
+      display: "optional",
+      fallbacks: ["system-ui", "sans-serif"],
+      options: {
+        variants: [
+          {
+            src: [
+              "@fontsource-variable/overpass/files/overpass-latin-wght-normal.woff2",
+            ],
+            weight: "100 900",
+            style: "normal",
+          },
+        ],
+      },
+    },
+    {
+      provider: fontProviders.local(),
+      name: "JetBrains Mono",
+      cssVariable: "--font-jetbrains-mono",
+      display: "optional",
+      fallbacks: ["monospace"],
+      options: {
+        variants: [400, 600].map((weight) => ({
+          src: [
+            `@fontsource/jetbrains-mono/files/jetbrains-mono-latin-${weight}-normal.woff2`,
+          ],
+          weight,
+          style: "normal",
+        })),
+      },
+    },
+  ],
   redirects: Object.fromEntries(
     moved.map((path) => [`/${path}/`, `/docs/${path.split("/")[1]}/`]),
   ),

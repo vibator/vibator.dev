@@ -1,4 +1,8 @@
 {
   "$schema": "https://unpkg.com/knip@6/schema.json",
-  "entry": ["scripts/*.ts", ".vibator/*.ts"]
+  "entry": ["scripts/*.ts", ".vibator/*.ts"],
+  "ignoreDependencies": [
+    "@fontsource-variable/overpass",
+    "@fontsource/jetbrains-mono"
+  ]
 }

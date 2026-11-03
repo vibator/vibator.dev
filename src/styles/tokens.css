@@ -2,8 +2,8 @@
 :root {
   color-scheme: light;
 
-  --font-sans: "Overpass Variable", "Overpass", system-ui, sans-serif;
-  --font-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", monospace;
+  --font-sans: var(--font-overpass);
+  --font-mono: var(--font-jetbrains-mono);
 
   --steel: #e6e9ec;
   --steel-deep: #d3d8dd;

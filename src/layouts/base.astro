@@ -1,8 +1,6 @@
 ---
 /** The page shell: the fonts, the head tags, the theme script, the header and the footer. */
-import "@fontsource-variable/overpass";
-import "@fontsource/jetbrains-mono/400.css";
-import "@fontsource/jetbrains-mono/600.css";
+import { Font } from "astro:assets";
 import "../styles/site.css";
 import SiteFooter from "../components/site-footer.astro";
 import SiteHeader from "../components/site-header.astro";
@@ -34,6 +32,8 @@ const image = new URL(link("og.png"), Astro.site).href;
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <Font cssVariable="--font-overpass" preload />
+    <Font cssVariable="--font-jetbrains-mono" preload />
     <script is:inline>
       // Applies the stored theme before the first paint. Storage can be blocked.
       (() => {
