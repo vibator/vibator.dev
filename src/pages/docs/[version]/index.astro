@@ -1,7 +1,8 @@
 ---
 /** The home of a version's docs, such as `docs/next/`: it opens the version's first guide page. */
+import Redirect from "../../../components/redirect.astro";
 import { allVersions } from "../../../lib/docs-content.ts";
-import { docNavItems } from "../../../lib/docs-nav.ts";
+import { firstDocSlug } from "../../../lib/docs-nav.ts";
 import type { DocVersion } from "../../../lib/versions.ts";
 
 /**
@@ -19,6 +20,6 @@ export function getStaticPaths() {
 }
 
 const { version } = Astro.props as { version: DocVersion };
-const first = docNavItems[0]?.slug ?? "what-is-vibator";
-return Astro.redirect(`/${version.path}${first}/`);
 ---
+
+<Redirect to={`/${version.path}${firstDocSlug}/`} />

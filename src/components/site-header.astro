@@ -2,6 +2,7 @@
 /** The site header: the mark and name, Docs, GitHub, the theme toggle, and on docs pages the search and menu. */
 import "../styles/site.css";
 import logoSource from "../assets/logo-light.svg?raw";
+import { firstDocSlug } from "../lib/docs-nav.ts";
 import { repositoryUrl } from "../lib/project.ts";
 import { link } from "../lib/url.ts";
 import ThemeToggle from "./theme-toggle.astro";
@@ -38,7 +39,7 @@ const logo = logoSource
         <li>
           <a
             class="nav-link"
-            href={link("docs/")}
+            href={link(`docs/${firstDocSlug}/`)}
             aria-current={current === "docs" ? "page" : undefined}>Docs</a
           >
         </li>

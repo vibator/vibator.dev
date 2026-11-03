@@ -1,4 +1,5 @@
 ---
+import { firstDocSlug } from "../lib/docs-nav.ts";
 /** The site footer: the license and the project's links. */
 import { githubUrl, repositoryUrl, siteRepositoryUrl } from "../lib/project.ts";
 import { link } from "../lib/url.ts";
@@ -9,7 +10,7 @@ import { link } from "../lib/url.ts";
     <p>vibator is <a href={githubUrl("LICENSE", "main")}>MIT licensed</a>.</p>
     <nav aria-label="Footer">
       <ul>
-        <li><a href={link("docs/")}>Docs</a></li>
+        <li><a href={link(`docs/${firstDocSlug}/`)}>Docs</a></li>
         <li><a href={repositoryUrl}>GitHub</a></li>
         <li><a href={`${repositoryUrl}/releases`}>Releases</a></li>
         <li><a href="https://www.npmjs.com/package/vibator">npm</a></li>

@@ -1,4 +1,5 @@
 ---
+import { firstDocSlug } from "../lib/docs-nav.ts";
 /** The docs menu on a narrow screen: a header button that opens a panel with the site links and the docs. */
 import { repositoryUrl } from "../lib/project.ts";
 import { link } from "../lib/url.ts";
@@ -64,7 +65,7 @@ const { current, path, slugs, versions } = Astro.props;
     <nav aria-label="Site">
       <ul class="site-links">
         <li><a href={link()}>Home</a></li>
-        <li><a href={link("docs/")}>Docs</a></li>
+        <li><a href={link(`docs/${firstDocSlug}/`)}>Docs</a></li>
         <li><a href={repositoryUrl}>GitHub</a></li>
       </ul>
     </nav>

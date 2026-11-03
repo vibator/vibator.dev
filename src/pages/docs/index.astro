@@ -1,7 +1,7 @@
 ---
 /** The docs home, `docs/`: it opens the first guide page of the latest version. */
-import { docNavItems } from "../../lib/docs-nav.ts";
-
-const first = docNavItems[0]?.slug ?? "what-is-vibator";
-return Astro.redirect(`/docs/${first}/`);
+import Redirect from "../../components/redirect.astro";
+import { firstDocSlug } from "../../lib/docs-nav.ts";
 ---
+
+<Redirect to={`/docs/${firstDocSlug}/`} />

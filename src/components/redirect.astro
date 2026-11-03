@@ -1,0 +1,26 @@
+---
+/** A page that opens another page at once. Astro's own redirect pages wait two seconds. */
+
+/** Props of the redirect. */
+interface Props {
+  /** The site path to open, such as `/docs/what-is-vibator/`. */
+  to: string;
+}
+
+const { to } = Astro.props;
+const canonical = new URL(to, Astro.site).href;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>vibator docs</title>
+    <meta http-equiv="refresh" content={`0;url=${to}`} />
+    <meta name="robots" content="noindex" />
+    <link rel="canonical" href={canonical} />
+  </head>
+  <body>
+    <p><a href={to}>Open the docs</a></p>
+  </body>
+</html>

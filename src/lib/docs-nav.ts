@@ -43,3 +43,6 @@ export const docNav: readonly DocNavGroup[] = [
 export const docNavItems: readonly DocNavItem[] = docNav.flatMap(
   (group) => group.items,
 );
+
+/** The docs' first page, which `docs/` and each version's home open. */
+export const firstDocSlug = docNavItems[0]?.slug ?? "what-is-vibator";

@@ -33,7 +33,7 @@ export default defineConfig({
   ),
   integrations: [
     // The sitemap lists the latest docs only: `next` and older releases point to them.
-    sitemap({ filter: (page) => !/\/docs\/(next|v\d+\.\d+)\//.test(page) }),
+    sitemap({ filter: (page) => !/\/docs\/(next\/|v\d+\.\d+\/|$)/.test(page) }),
   ],
   markdown: {
     shikiConfig: { theme: "css-variables" },
