@@ -4,9 +4,30 @@ import { Code } from "astro:components";
 import { colorsRule } from "./samples.ts";
 import Window from "./window.astro";
 
-const commands = `npm install --save-dev vibator
+/** The install commands for each package manager, in tab order. */
+const managers = [
+  {
+    id: "npm",
+    label: "npm",
+    commands: `npm install --save-dev vibator
 npx vibator init
-npx vibator`;
+npx vibator`,
+  },
+  {
+    id: "pnpm",
+    label: "pnpm",
+    commands: `pnpm add --save-dev vibator
+pnpm exec vibator init
+pnpm exec vibator`,
+  },
+  {
+    id: "bun",
+    label: "Bun",
+    commands: `bun add --dev vibator
+bunx --bun vibator init
+bunx --bun vibator`,
+  },
+];
 ---
 
 <section class="hero">
@@ -18,13 +39,37 @@ npx vibator`;
         that no linter provides. vibator gives those checks one home: a rule is one file in
         <code>.vibator/</code>, and <code>npx vibator</code> runs them all.
       </p>
-      <div class="command">
-        <pre tabindex="0"><code>{commands}</code></pre>
-        <button type="button" class="copy" data-copy={commands}>Copy</button>
+      <div class="install" data-tabs>
+        <div class="tabs" role="tablist" aria-label="Package manager">
+          {managers.map((manager, index) => (
+            <button
+              type="button"
+              role="tab"
+              id={`install-tab-${manager.id}`}
+              aria-controls={`install-panel-${manager.id}`}
+              aria-selected={index === 0 ? "true" : "false"}
+              tabindex={index === 0 ? 0 : -1}
+            >
+              {manager.label}
+            </button>
+          ))}
+        </div>
+        {managers.map((manager, index) => (
+          <div
+            class="command"
+            role="tabpanel"
+            id={`install-panel-${manager.id}`}
+            aria-labelledby={`install-tab-${manager.id}`}
+            hidden={index !== 0}
+          >
+            <pre tabindex="0"><code>{manager.commands}</code></pre>
+            <button type="button" class="copy" data-copy={manager.commands}>Copy</button>
+          </div>
+        ))}
       </div>
       <p class="note">
-        Requires Node 24 or later. <code>init</code> writes a starter rule in
-        <code>.vibator/</code>.
+        Requires Node 24 or later, or Bun 1.4.2 or later. <code>init</code> writes a starter rule
+        in <code>.vibator/</code>. With Bun, <code>--bun</code> runs vibator on Bun instead of Node.
       </p>
       <div class="actions">
         <a class="button primary" href="/docs/getting-started/">Get started</a>
@@ -58,6 +103,52 @@ npx vibator`;
   const term = document.querySelector<HTMLElement>("[data-term]");
   if (term && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
     void playRun(term);
+  }
+
+  for (const tabs of document.querySelectorAll<HTMLElement>("[data-tabs]")) {
+    setUpTabs(tabs);
+  }
+
+  /**
+   * Makes a tab list switch its panels on click and on the arrow, Home, and End keys.
+   *
+   * @param root - The element that holds the tab list and its panels.
+   * @returns Nothing.
+   */
+  function setUpTabs(root: HTMLElement): void {
+    const tabs = [...root.querySelectorAll<HTMLButtonElement>('[role="tab"]')];
+
+    /**
+     * Shows the panel of one tab and hides the others.
+     *
+     * @param selected - The tab to select.
+     * @returns Nothing.
+     */
+    const select = (selected: HTMLButtonElement): void => {
+      for (const tab of tabs) {
+        const active = tab === selected;
+        tab.setAttribute("aria-selected", String(active));
+        tab.tabIndex = active ? 0 : -1;
+        const panel = document.getElementById(tab.getAttribute("aria-controls") ?? "");
+        if (panel) panel.hidden = !active;
+      }
+    };
+
+    for (const [index, tab] of tabs.entries()) {
+      tab.addEventListener("click", () => select(tab));
+      tab.addEventListener("keydown", (event) => {
+        const next = {
+          ArrowRight: tabs[(index + 1) % tabs.length],
+          ArrowLeft: tabs[(index - 1 + tabs.length) % tabs.length],
+          Home: tabs[0],
+          End: tabs[tabs.length - 1],
+        }[event.key];
+        if (!next) return;
+        event.preventDefault();
+        select(next);
+        next.focus();
+      });
+    }
   }
 
   for (const button of document.querySelectorAll<HTMLButtonElement>("button[data-copy]")) {
@@ -117,9 +208,29 @@ npx vibator`;
     border-radius: 4px;
   }
 
+  .install { margin-top: 1.75rem; }
+  .tabs { display: flex; gap: 0.25rem; margin-bottom: -1px; }
+  .tabs [role="tab"] {
+    font: inherit;
+    font-size: 0.85rem;
+    padding: 0.35rem 0.9rem;
+    border: 1px solid transparent;
+    border-bottom: 0;
+    border-radius: 6px 6px 0 0;
+    background: none;
+    color: var(--muted);
+    cursor: pointer;
+  }
+  .tabs [role="tab"]:hover { color: var(--ink); }
+  .tabs [role="tab"][aria-selected="true"] {
+    border-color: var(--line);
+    background: var(--rail);
+    color: var(--ink);
+    box-shadow: inset 0 2px 0 var(--signal);
+  }
+  .command[hidden] { display: none; }
   .command {
     position: relative;
-    margin-top: 1.75rem;
     border: 1px solid var(--line);
     border-radius: 8px;
     background: var(--rail);
