@@ -30,6 +30,7 @@ utilities through the <a href="/docs/next/vibator-namespace/"><code>vibator</cod
 <li><a href="#diagnostic">Diagnostic</a>: One finding in a report.</li>
 <li><a href="#severity">Severity</a>: The importance of a finding.</li>
 <li><a href="#runrule">runRule</a>: Run a rule in a test.</li>
+<li><a href="#syntax">Syntax</a>: The TypeScript a rule module can use.</li>
 </ul>
 <hr>
 <h2 id="definerule">defineRule</h2>
@@ -215,6 +216,30 @@ a diagnostic, such as a <a href="/docs/next/vibator-namespace/#hit">Hit</a>:
 </tr>
 </tbody>
 </table></div>
+<h2 id="syntax">Syntax</h2>
+<p>The TypeScript a rule module can use. The framework loads each rule module with
+a plain <code>import()</code>, so the runtime compiles it.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Runtime</th>
+<th>Accepts</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Node 24</td>
+<td>Erasable syntax only. Enums, parameter properties, and namespaces fail.</td>
+</tr>
+<tr>
+<td>Bun</td>
+<td>Any TypeScript.</td>
+</tr>
+</tbody>
+</table></div>
+<p>A rule that loads on Bun can fail on Node. Write rules with erasable syntax so
+they run on both. TypeScript 5.8 and later check this with <code>erasableSyntaxOnly</code>
+in the <code>tsconfig</code> that covers the rules.</p>
 <hr>
 <h2 id="external-types">External types</h2>
 <p>Types provided by other packages.</p>
@@ -232,4 +257,4 @@ a diagnostic, such as a <a href="/docs/next/vibator-namespace/#hit">Hit</a>:
 </tr>
 </tbody>
 </table></div>
-</div></article></div><nav class="toc" aria-labelledby="toc-title" data-astro-cid-7fqtfzcv><h2 id="toc-title" data-astro-cid-7fqtfzcv>On this page</h2><ul data-astro-cid-7fqtfzcv><li class="depth-2" data-astro-cid-7fqtfzcv><a href="#reference" data-astro-cid-7fqtfzcv>Reference</a></li><li class="depth-2" data-astro-cid-7fqtfzcv><a href="#definerule" data-astro-cid-7fqtfzcv>defineRule</a></li><li class="depth-2" data-astro-cid-7fqtfzcv><a href="#rule" data-astro-cid-7fqtfzcv>Rule</a></li><li class="depth-2" data-astro-cid-7fqtfzcv><a href="#report" data-astro-cid-7fqtfzcv>Report</a></li><li class="depth-2" data-astro-cid-7fqtfzcv><a href="#diagnostic" data-astro-cid-7fqtfzcv>Diagnostic</a></li><li class="depth-2" data-astro-cid-7fqtfzcv><a href="#severity" data-astro-cid-7fqtfzcv>Severity</a></li><li class="depth-2" data-astro-cid-7fqtfzcv><a href="#runrule" data-astro-cid-7fqtfzcv>runRule</a></li><li class="depth-2" data-astro-cid-7fqtfzcv><a href="#external-types" data-astro-cid-7fqtfzcv>External types</a></li></ul></nav></div></main><footer class="site-footer" data-astro-cid-7lhuyvjk><div class="container row" data-astro-cid-7lhuyvjk><p data-astro-cid-7lhuyvjk>vibator is <a href="https://github.com/vibator/vibator/blob/main/LICENSE" data-astro-cid-7lhuyvjk>MIT licensed</a>.</p><nav aria-label="Footer" data-astro-cid-7lhuyvjk><ul data-astro-cid-7lhuyvjk><li data-astro-cid-7lhuyvjk><a href="/docs/what-is-vibator/" data-astro-cid-7lhuyvjk>Docs</a></li><li data-astro-cid-7lhuyvjk><a href="https://github.com/vibator/vibator" data-astro-cid-7lhuyvjk>GitHub</a></li><li data-astro-cid-7lhuyvjk><a href="https://github.com/vibator/vibator/releases" data-astro-cid-7lhuyvjk>Releases</a></li><li data-astro-cid-7lhuyvjk><a href="https://www.npmjs.com/package/vibator" data-astro-cid-7lhuyvjk>npm</a></li><li data-astro-cid-7lhuyvjk><a href="https://github.com/vibator/vibator.dev/blob/main/ACCESSIBILITY.md" data-astro-cid-7lhuyvjk>Accessibility</a></li></ul></nav></div></footer></body></html><script type="module">async function e(e,t){try{await navigator.clipboard.writeText(t),e.textContent=`Copied`}catch{e.textContent=`Select and copy`}setTimeout(()=>{e.textContent=`Copy`},1600)}function t(t){for(let n of t){let t=document.createElement(`div`);t.className=`code-block`,n.replaceWith(t),t.append(n);let r=document.createElement(`button`);r.type=`button`,r.className=`copy-button`,r.textContent=`Copy`,r.setAttribute(`aria-label`,`Copy the code`),r.addEventListener(`click`,()=>{let t=n.querySelector(`code`)?.textContent??n.textContent;e(r,t)}),t.append(r)}}t(document.querySelectorAll(`.prose pre`));for(let e of document.querySelectorAll(`.prose .table-wrap`))e.tabIndex=0;</script>
+</div></article></div><nav class="toc" aria-labelledby="toc-title" data-astro-cid-7fqtfzcv><h2 id="toc-title" data-astro-cid-7fqtfzcv>On this page</h2><ul data-astro-cid-7fqtfzcv><li class="depth-2" data-astro-cid-7fqtfzcv><a href="#reference" data-astro-cid-7fqtfzcv>Reference</a></li><li class="depth-2" data-astro-cid-7fqtfzcv><a href="#definerule" data-astro-cid-7fqtfzcv>defineRule</a></li><li class="depth-2" data-astro-cid-7fqtfzcv><a href="#rule" data-astro-cid-7fqtfzcv>Rule</a></li><li class="depth-2" data-astro-cid-7fqtfzcv><a href="#report" data-astro-cid-7fqtfzcv>Report</a></li><li class="depth-2" data-astro-cid-7fqtfzcv><a href="#diagnostic" data-astro-cid-7fqtfzcv>Diagnostic</a></li><li class="depth-2" data-astro-cid-7fqtfzcv><a href="#severity" data-astro-cid-7fqtfzcv>Severity</a></li><li class="depth-2" data-astro-cid-7fqtfzcv><a href="#runrule" data-astro-cid-7fqtfzcv>runRule</a></li><li class="depth-2" data-astro-cid-7fqtfzcv><a href="#syntax" data-astro-cid-7fqtfzcv>Syntax</a></li><li class="depth-2" data-astro-cid-7fqtfzcv><a href="#external-types" data-astro-cid-7fqtfzcv>External types</a></li></ul></nav></div></main><footer class="site-footer" data-astro-cid-7lhuyvjk><div class="container row" data-astro-cid-7lhuyvjk><p data-astro-cid-7lhuyvjk>vibator is <a href="https://github.com/vibator/vibator/blob/main/LICENSE" data-astro-cid-7lhuyvjk>MIT licensed</a>.</p><nav aria-label="Footer" data-astro-cid-7lhuyvjk><ul data-astro-cid-7lhuyvjk><li data-astro-cid-7lhuyvjk><a href="/docs/what-is-vibator/" data-astro-cid-7lhuyvjk>Docs</a></li><li data-astro-cid-7lhuyvjk><a href="https://github.com/vibator/vibator" data-astro-cid-7lhuyvjk>GitHub</a></li><li data-astro-cid-7lhuyvjk><a href="https://github.com/vibator/vibator/releases" data-astro-cid-7lhuyvjk>Releases</a></li><li data-astro-cid-7lhuyvjk><a href="https://www.npmjs.com/package/vibator" data-astro-cid-7lhuyvjk>npm</a></li><li data-astro-cid-7lhuyvjk><a href="https://github.com/vibator/vibator.dev/blob/main/ACCESSIBILITY.md" data-astro-cid-7lhuyvjk>Accessibility</a></li></ul></nav></div></footer></body></html><script type="module">async function e(e,t){try{await navigator.clipboard.writeText(t),e.textContent=`Copied`}catch{e.textContent=`Select and copy`}setTimeout(()=>{e.textContent=`Copy`},1600)}function t(t){for(let n of t){let t=document.createElement(`div`);t.className=`code-block`,n.replaceWith(t),t.append(n);let r=document.createElement(`button`);r.type=`button`,r.className=`copy-button`,r.textContent=`Copy`,r.setAttribute(`aria-label`,`Copy the code`),r.addEventListener(`click`,()=>{let t=n.querySelector(`code`)?.textContent??n.textContent;e(r,t)}),t.append(r)}}t(document.querySelectorAll(`.prose pre`));for(let e of document.querySelectorAll(`.prose .table-wrap`))e.tabIndex=0;</script>
