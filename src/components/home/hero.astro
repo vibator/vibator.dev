@@ -209,14 +209,15 @@ bunx --bun vibator`,
   }
 
   .install { margin-top: 1.75rem; }
-  .tabs { display: flex; gap: 0.25rem; margin-bottom: -1px; }
+  /* The tab list overlaps the top border of the panel by 1px, so the selected tab covers it. */
+  .tabs { position: relative; z-index: 1; display: flex; margin-bottom: -1px; }
   .tabs [role="tab"] {
     font: inherit;
     font-size: 0.85rem;
-    padding: 0.35rem 0.9rem;
+    padding: 0.4rem 1rem;
     border: 1px solid transparent;
     border-bottom: 0;
-    border-radius: 6px 6px 0 0;
+    border-radius: 8px 8px 0 0;
     background: none;
     color: var(--muted);
     cursor: pointer;
@@ -226,9 +227,10 @@ bunx --bun vibator`,
     border-color: var(--line);
     background: var(--rail);
     color: var(--ink);
-    box-shadow: inset 0 2px 0 var(--signal);
   }
   .command[hidden] { display: none; }
+  /* The first tab starts at the left edge of the panel, so the corner under it is square. */
+  .install:has([role="tab"]:first-child[aria-selected="true"]) .command { border-top-left-radius: 0; }
   .command {
     position: relative;
     border: 1px solid var(--line);
