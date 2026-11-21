@@ -37,22 +37,22 @@
     "rules": "bun --bun vibator"
   },
   "dependencies": {
-    "@astrojs/markdown-satteri": "0.4.6",
-    "@astrojs/sitemap": "3.7.4",
+    "@astrojs/markdown-satteri": "0.4.10",
+    "@astrojs/sitemap": "3.7.6",
     "@fontsource-variable/overpass": "5.3.0",
     "@fontsource/jetbrains-mono": "5.3.0",
-    "astro": "7.4.5",
-    "satteri": "0.10.5"
+    "astro": "7.4.13",
+    "satteri": "0.11.7"
   },
   "devDependencies": {
-    "@biomejs/biome": "^2.6.4",
+    "@biomejs/biome": "^2.6.8",
     "@commitlint/cli": "^21.2.4",
     "@commitlint/config-conventional": "^21.2.4",
-    "axe-core": "^4.14.0",
+    "axe-core": "^4.14.1",
     "husky": "^9.1.7",
-    "knip": "^6.44.1",
+    "knip": "^6.46.1",
     "pagefind": "1.6.0",
-    "playwright": "^1.64.1",
+    "playwright": "^1.65.1",
     "remark": "^15.0.1",
     "remark-cli": "^12.0.1",
     "remark-frontmatter": "^5.0.0",
